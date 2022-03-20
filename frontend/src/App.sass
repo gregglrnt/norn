@@ -1,0 +1,121 @@
+@use './index'
+
+#app 
+  height:100vh
+  width:100vw
+  color:white
+  display: grid
+  grid-template-columns: 3fr 2fr
+
+  & > div:first-child
+      background: radial-gradient(circle, rgba(11,159,249,0.5550420851934523) 0%, rgba(0,212,255,0) 80%)
+      max-height: 80vh
+header
+
+  h1 
+    position: fixed
+    top: 1rem
+    left: 5%
+    margin: 0
+    font-size: 0.7rem
+    @include index.titles
+
+    span 
+      text-transform: uppercase
+      font-size: 2rem
+   
+  .neon-title
+    font-size: 2.5rem 
+      
+    .decade
+      font-size: 5rem
+
+
+@mixin neon-animation($color, $name)
+  @keyframes neonize-#{$name}
+    0%
+      text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 20px #fff, 0 0 43px $color, 0 0 56px $color, 0 0 160px $color
+    100%
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 30px #fff, 0 0 50px $color, 0 0 60px $color, 0 0 170px $color
+
+@mixin neon-title($color, $name, $skew)
+    @include index.titles
+    font-size: 2rem
+    transform: skewY(-#{$skew}deg)
+    color: $color
+    margin: 0
+    animation: neonize-#{$name} 1s infinite alternate
+    text-align: center
+    -webkit-text-stroke: 1px index.$ivory-background
+    @include neon-animation($color, $name)
+
+.neon-title 
+  @include neon-title(index.$title-salmon, "salmon", random(4))
+
+.neon-title.blue 
+  @include neon-title(index.$basic-blue, "blue", random(4))
+
+.neon-title.orange 
+  @include neon-title(index.$hightlight-orange, "orange", random(4))  
+
+
+#timeline-html-range 
+  visibility: hidden    
+
+canvas
+
+  width: 100%
+  height: 100%
+
+  &:hover
+    cursor:grab
+
+
+.chronicles
+
+  display: flex
+  flex-wrap: wrap
+  gap: 2rem
+  padding: 2rem
+  flex-direction: column
+
+  header
+    order: -2
+
+  & > small
+    color: index.$hightlight-orange
+    text-align: center
+    transform: translateY(-1rem)
+    
+
+
+/*@mixin keyboard-button
+  position: fixed
+  top: 50%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  background: index.$ivory-background
+  border: 0.5rem groove index.$ivory-background
+  border-radius: 0.5rem
+  font-family: monospace
+  width: 5rem
+  height: 5rem
+  font-size: 2rem
+
+
+  &:hover
+    cursor: pointer
+  
+  small 
+    font-size: 0.5rem
+
+/*#timeline-key-left
+  @include keyboard-button
+  left: 10px
+
+/*#timeline-key-right
+  @include keyboard-button
+  right: 10px
+
+
