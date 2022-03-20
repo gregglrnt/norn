@@ -1,46 +1,71 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Globe from './components/Globe'
 import Chronicle from './components/Chronicle'
-import './App.css';
-import { HistoricalEvent } from './types/HistoricalEvent.type';
+import './App.sass';
 import Pin from './components/Pin';
 import { useWorldHistory } from './api/events';
 import usePrevious from './api/usePrevious';
+import Timeline from './components/Timeline';
+import { HistoricalEvent } from './types/HistoricalEvent.type';
 
 function App() {
+  const beginning = -800
+  const end = 2020
   const [decade, setDecade] = useState<number>(1510);
   const [points, setPoints] = useState<Pin[]>()
   const previousDecade = usePrevious(decade);
-  const events = useWorldHistory(decade, previousDecade);
+  const worldHistory = useWorldHistory(decade, previousDecade)
+  const [events, setEvents] = useState<Map<number, HistoricalEvent> | undefined>()
+  const [focus, setFocus] = useState<string | undefined>()
   
+  // on écoute le decade pour charger les évènements
+  useEffect(() => {
+    const apiEvents = worldHistory;
+    if(apiEvents) setEvents(apiEvents)
+  }, [worldHistory])
+
+  // Génération de pins
   useEffect(()=> {
+    console.log(events)
     if(points) for (let point of points) point.destroy();
     let pins : Pin[] = [];
-    events?.forEach((event)=> {
+    events && events.forEach((event)=> {
       pins.push(new Pin(event));
     });
     setPoints(pins);
   }, [events]);
 
+  // Update de focus
+  useEffect(() => {
+    console.log('focus', focus)
+  }, [focus])
+
   useEffect(()=> {
+    // Update de l'année grâce au clavier
     document.addEventListener('keydown', (e) => {
       if(e.key === 'ArrowRight'){
         e.preventDefault();
-        setDecade(decade => decade+20);
+        if((decade+20) <= end) setDecade(decade => decade+20);
+
       }
       if(e.key == 'ArrowLeft') {
         e.preventDefault();
-        setDecade(decade => decade-20);
+        if((decade-20) >= beginning) setDecade(decade => decade-20);
       }
     })
+    // Update du focus au clic sur une année
   }, [])
+
 
   return (
     <div className="App">
     <header>
-      <h1> Welcome in {decade} ! </h1>
-      <input  type="range"
-              min="-800" max="2020"       
+      <h1> <span>Norn</span> - A timeline of events </h1>
+      <h2 className='neon-title'> Welcome in the <span className='decade'>{decade}</span>s ! </h2>
+      <Timeline beginning={beginning} end={end} year={decade} setYear={setDecade}/>
+      <input  id="timeline-html-range"
+              type="range"
+              min={beginning.toString()} max={end.toString()}       
               step="20" 
               value={decade} 
               style={{width:'100%'}} 
@@ -48,16 +73,30 @@ function App() {
               }/>
     </header>
     <main id="app">
-      <div>
-        <Globe pins={points} handlePins={setPoints}/>
-      </div>
+    
+      <Globe pins={points} handlePins={setPoints} focus={focus} setFocus={setFocus}/>
       <div className="chronicles">
+        <header>
+          <h2 className='neon-title orange'> Today's news </h2>
+          <small> Brought to you by <b>gregglrnt</b> </small>
+        </header>
         {
-          events && events.map((event) => {
+          events && [...events.values()].map((event) => {
             let color = 'ffffff';
             if(event.country) color = (event.country.id*500000).toString(16);
             return (
-              <Chronicle id={event.id} key={event.id} title={event.name} color={color}>
+              <Chronicle  id={event.id}
+                          key={event.id}
+                          title={event.name}
+                          color={color}
+                          onClick={(e) => {
+                            for (let otherChronicle of document.querySelectorAll('.chronicle')) {
+                              otherChronicle.classList.remove('selected')
+                            }
+                            e.currentTarget.classList.add('selected')
+                            setFocus(e.currentTarget.id)}
+                          }
+                        >
                 <small> {event.date} </small>
                 <small> {event.country?.name} </small>
                 <p> {event.description} </p>
@@ -67,6 +106,14 @@ function App() {
         }
       </div>
     </main>
+    {/*<button id="timeline-key-left" onClick={() => setDecade(decade-20)}>
+        {'<'}
+        <small> {decade - 10} </small>
+    </button>
+    <button id="timeline-key-right" onClick={()=> setDecade(decade+20)}>
+        {'>'}
+        <small> {decade + 10} </small>
+      </button>*/}
     </div>
   );
 }

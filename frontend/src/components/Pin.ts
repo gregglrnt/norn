@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { convertToCoordinates } from '../lib/utils';
 import { Country } from '../types/Country.type';
 import { HistoricalEvent } from '../types/HistoricalEvent.type';
 import {radius} from './Globe'
@@ -18,20 +19,10 @@ export default class Pin {
             new THREE.MeshBasicMaterial({color : this.color}),
         )
         const coordinates = event.coordinates.split(",");
-        let xyz = this.setCoordinates(parseInt(coordinates[0]), parseInt(coordinates[1]), radius);
+        let xyz = convertToCoordinates(parseInt(coordinates[0]), parseInt(coordinates[1]), radius);
         pin.position.set(xyz.x, xyz.y, xyz.z);
-        pin.name = "pin_event_" + pin.id;
+        pin.name = "pin_event_" + event.id;
         this.object = pin;
-    }
-
-    public setCoordinates(lat:number, lon:number, radius:number): { x: number; y: number; z: number; } {
-        lat = (90-lat)*(Math.PI/180);
-        lon = (lon+180)*(Math.PI/180);
-
-        let x = -(radius * Math.sin(lat)*Math.cos(lon));
-        let z = (radius* Math.sin(lat)*Math.sin(lon));
-        let y = (radius*Math.cos(lat));
-        return {x, y, z};
     }
 
     public setColor(country : Country | null) : void{

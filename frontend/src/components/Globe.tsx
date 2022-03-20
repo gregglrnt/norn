@@ -1,137 +1,246 @@
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three"
+import React, { createRef, RefObject } from "react";
+import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import Stats from "three/examples/jsm/libs/stats.module";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import { fragmentShader, vertexShader } from "../shaders/shaders";
 import Earth from "./Earth";
 import Pin from "./Pin";
 const cloud = require('../textures/clouds.png');
 
-type GlobeInterface = {
+
+type GlobeProps = {
     pins: Pin[] | undefined,
     handlePins: Function,
+    focus: string | undefined,
+    setFocus: Function,
 }
 
-export const radius : number = 3;
+export const radius: number = 3;
 
-/**
- * 
- * @param param0 
- *  - pins: a list of pins, with coordinates (lat, long)
- * - handlePins : a method to set the pins
- * @returns 
- */
-export default function Globe({pins} : GlobeInterface) {
-    const globe = useRef<THREE.Object3D>(new THREE.Object3D())
-    const globeDiv = useRef<HTMLDivElement>(document.createElement("div"));
+export default class Globe extends React.Component<GlobeProps> {
+    private globe: THREE.Object3D
+    private globeDiv : RefObject<HTMLDivElement>
+    private scene : THREE.Scene
+    private camera : THREE.PerspectiveCamera;
+    private renderer : THREE.WebGLRenderer;
+    private light: THREE.DirectionalLight;
+    private stats: Stats
+    private controls: OrbitControls;
+    
+    // planète
+    private earth: Earth
+    private sky: THREE.Mesh
 
-        useEffect(() => {
-        // initialisation de la scène
-        const scene = new THREE.Scene();
-        scene.background = null;
-        // initialisation caméra
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 100);
-        camera.position.z = 9;
-        camera.position.y = 2; 
 
-        //initialisation rendu
-        const renderer = new THREE.WebGLRenderer({
-            alpha: true, // transparence
-            antialias: true // aliasing
+    constructor(props : GlobeProps) {
+        super(props)
+        this.globe = new THREE.Object3D()
+        this.globeDiv = createRef()
+        // initialisation scène
+        this.scene = new THREE.Scene()
+        this.scene.background = null;
+        // mise en place de la caméra
+        this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight)
+        this.camera.position.z = 10
+        this.camera.position.y = 2
+
+        // on prépare le renderer
+        this.renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
         })
+        this.renderer.setClearColor(0x000000, 0)
 
-        // initialisation lumière
-        const light= new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5, 3, 5);
-        scene.add(new THREE.AmbientLight(0x404040, 1));
-        scene.add(light);
+        // initialisation de la lumière
+        this.light = new THREE.DirectionalLight(0xFFF2CC, 1)
+        this.light.position.copy(this.camera.position)
+        
+        // ajout de la lumière à la scène
+        this.scene.add(this.light)
+        this.scene.add(new THREE.AmbientLight(0x4BB4EE, 0.2))
 
-        renderer.setClearColor(0x000000, 0);
-
-
-        // object THREEjs qui contiendra le reste : 
-        const earth = new Earth(radius);
-
-        // ajouter le ciel
-        const sky = new THREE.Mesh(
-            new THREE.SphereGeometry(radius + 0.02, 50, 50),
+        this.earth = new Earth(radius)
+        this.sky = new THREE.Mesh(
+            new THREE.SphereGeometry(radius + 0.015, 50, 50),
             new THREE.MeshPhongMaterial({
                 map: new THREE.TextureLoader().load(cloud),
-                transparent: true
-            }));
+                transparent: true,
+            })
+        )
+        this.stats = Stats()
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    }
+
+    componentDidMount = () => {
+        this.earth.name = "Earth"
+        this.sky.name = "Sky"
+
+        
+        // contrôles
+        this.controls.enableZoom = false
+        this.controls.update()
+        this.globeDiv.current?.appendChild(this.stats.dom)
+
+        const axesHelper = new THREE.AxesHelper( 5 );
+        this.scene.add(axesHelper)
+
+        let cameraHelper = new THREE.ArrowHelper(
+            this.globe.position, 
+            this.camera.position
+        )
+        this.scene.add(cameraHelper)
+
+        // on ajoute tout au globe
+        this.globe.add(this.earth)
+        this.globe.add(this.sky)
+        this.scene.add(this.globe)
+        
+        this.globeDiv.current?.replaceChildren(this.renderer.domElement)
         
 
-        // tout ajouter au globe
-        globe.current.add(earth);
-        globe.current.add(sky);
-        scene.add(globe.current);
+        const raycaster = new THREE.Raycaster()
+        const mouse = new THREE.Vector2();
 
-        // ajouter le globe dans le DOM
-        globeDiv.current.replaceChildren(renderer.domElement);
-        
-        // controleur et zoom
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = false;
-        controls.update();
+        // add pointervents
+
+        window.addEventListener('pointerdown', (event) => {
+            const box = this.renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - box.left) / (box.right - box.left)) * 2 - 1;
+            mouse.y = -((event.clientY - box.top) / (box.bottom - box.top)) * 2 + 1;
+            raycaster.setFromCamera(mouse, this.camera);
+            const intersects = raycaster.intersectObjects(this.globe.children, false);
+                if(intersects.length > 0) {
+                    const pinSelected = intersects[0].object;
+                    if(pinSelected.name !== 'Sky' && pinSelected.name !== 'Earth') {
+                        const eventID = pinSelected.name.replace('pin_', '')
+                        const eventChronicles = document.getElementsByClassName('chronicles')[0];
+                        for(let otherEvents of eventChronicles.children) {
+                            otherEvents.classList.remove('selected')
+                        }
+                        const eventChronicle = document.getElementById(eventID)
+                        eventChronicle?.classList.add('selected');
+    
+                    }
+                } 
+        }); 
+
+
 
         // post-processing
+        const renderScene = new RenderPass( this.scene, this.camera );
         
-        /*const composer = new EffectComposer(renderer);
-                
-        //ajouter la scène au composer pour qu'il se charge du postprocessing
-        composer.addPass(new RenderPass(scene, camera)); 
-                
-        // ajout du glow
-        const bloomPass = new UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight), 
-            1.5, 
-            0.4, 
-            0.85
-        );
-        composer.addPass(bloomPass);
-        composer.setPixelRatio( window.devicePixelRatio );
-        */
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85)
+        
+        const bloomComposer = new EffectComposer( this.renderer );
+        bloomComposer.renderToScreen = false;
+        bloomComposer.addPass( renderScene );
+        bloomComposer.addPass( bloomPass );
 
+        const finalPass = new ShaderPass(
+            new THREE.ShaderMaterial( {
+                uniforms: {
+                    baseTexture: { value : null },
+                    bloomTexture: {value : bloomComposer.renderTarget2.texture},
+                },
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                defines: {},
+            }), 'baseTexture'
+        )
+        finalPass.needsSwap = true;
 
-        function resizeCanvas() {
-            const canvas = renderer.domElement;
+        const finalComposer = new EffectComposer( this.renderer );
+        finalComposer.addPass( renderScene );
+        finalComposer.addPass( finalPass );
+
+        requestAnimationFrame(this.animate)
+    
+    }
+
+    resizeCanvas = () => {
+            const canvas = this.renderer.domElement;
             const width = canvas.clientWidth;
             const height = canvas.clientHeight;
-
+        
             if(canvas.width !== width || canvas.height !== height) {
-                //renderer.setSize(width, height, false);
-                renderer.setSize(width, height, false);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
+                    //renderer.setSize(width, height, false);
+                this.renderer.setSize(width, height, false);
+                this.camera.aspect = width / height;
+                this.camera.updateProjectionMatrix();
+            }
+    }
+
+    animate = () => {
+        this.resizeCanvas()
+        this.light.position.x = 500* Math.sin(Date.now() / 10000)
+        this.light.position.z = 500* Math.cos(Date.now() / 10000)
+        this.sky.rotation.y += 0.001
+        this.renderer.render(this.scene, this.camera)
+        this.stats.update()
+        requestAnimationFrame(this.animate)
+    }
+
+
+
+    componentDidUpdate(prevProps : GlobeProps) {
+        // set pins on globe
+        if(this.props.pins !== prevProps.pins) {
+            if(this.props.pins) for(let pin of this.props.pins) {
+                this.globe.add(pin.object)
             }
         }
 
-        function animate() {
-            resizeCanvas();
+        // change focus
+        // TODO: faire en sorte que ça marche :)
+        if(this.props.focus !== prevProps.focus) {
+            const pinToFocus = this.globe.getObjectByName(`pin_${this.props.focus}`)
+            /*if(pinToFocus) {
+            const goTo = new THREE.Vector3();
+            goTo.x = pinToFocus.position.x - this.globe.position.x
+            goTo.y = pinToFocus.position.y - this.globe.position.y
+            goTo.z = pinToFocus.position.z - this.globe.position.z
+            let cameraVector = new THREE.Vector3()
+            this.camera.getWorldDirection(cameraVector)
+            const angle = goTo.angleTo(cameraVector)
+            this.globe.rotateX(angle)*/
+                if(pinToFocus) {
+                    let axis = new THREE.Vector3()
+                    axis.crossVectors(this.camera.position, pinToFocus.position)
+                    axis.normalize()
+                    let angle = this.camera.position.angleTo(pinToFocus.position)
+                    this.globe.rotateOnAxis(axis, angle)
 
-            globe.current.rotation.y += 0.002;
-            sky.rotation.y += 0.003;
-            //renderer.render(scene, camera);
-            renderer.render(scene, camera); 
-            requestAnimationFrame(animate);
+                    
+                    /*const quaternion = new THREE.Quaternion()
+                    quaternion.setFromUnitVectors(startVector.normalize(), endVector.normalize())*/
+                       
+                }
+            this.animate()
+            this.controls.update()
         }
-        requestAnimationFrame(animate);
+    }
 
-        }, []);
+    componentWillUnmount() {
+        console.log("Destroy everything");
+        for (let child of this.globe.children) {
+            child.removeFromParent();
+        }
+        this.globe.remove()
+        let canvases = this.globeDiv.current?.querySelectorAll('canvas');
+        if(canvases) for(let canvas of canvases) {
+            canvas.remove()
+        }
+    }
 
-        useEffect(() => {
-            if(pins) for(let pin of pins){
-                globe.current.add(pin.object);
-            }
-        }, [pins])
-
+    render() {
         return(
-            <div key="Scene" ref={globeDiv}>
+            <div ref={this.globeDiv}>
             </div>
         )
-
-
+    }
 }

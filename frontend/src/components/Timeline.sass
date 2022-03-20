@@ -1,0 +1,27 @@
+@use '../index'
+
+#timeline--container
+    height:0.5rem
+    border-radius: 25px
+    margin: 2rem
+    border: 2px solid index.$ivory-background
+    display: flex
+
+    &:hover
+        cursor: pointer
+    
+    #timeline--timespent
+        height:100%
+        background: index.$title-salmon
+        transition: cubic-bezier(.6,-0.28,.74,.05) 0.1s
+
+    .timeline--cursor
+        height: 20px
+        width: 20px
+        background: index.$ivory-background
+        border-radius: 20px
+        display: block
+        transform: translate(-1px, -5px)
+        z-index: 6
+        position: relative
+        //pointer-events: none
