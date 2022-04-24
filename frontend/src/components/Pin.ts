@@ -5,7 +5,7 @@ import { HistoricalEvent } from '../types/HistoricalEvent.type';
 import {radius} from './Globe'
 
 export default class Pin {
-    public object = new THREE.Mesh();
+    private object = new THREE.Mesh();
     private color = new THREE.Color();
 
     public get() : THREE.Mesh {
@@ -15,7 +15,7 @@ export default class Pin {
     public constructor(event: HistoricalEvent) {
         this.setColor(event.country);
         const pin = new THREE.Mesh(
-            new THREE.SphereGeometry(0.1, 20, 20),
+            new THREE.SphereGeometry(0.05, 20, 20),
             new THREE.MeshBasicMaterial({color : this.color}),
         )
         const coordinates = event.coordinates.split(",");
@@ -34,6 +34,14 @@ export default class Pin {
 
     public setName(name: string) : void{
         this.object.name = name;
+    }
+
+    public getName() : string {
+        return this.object.name; 
+    }
+
+    public setVisible(visibility: boolean) {
+        this.object.visible = visibility;
     }
 
     // réinitialisation de l'object Pin

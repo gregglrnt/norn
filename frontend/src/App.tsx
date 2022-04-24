@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import Globe from './components/Globe'
 import Chronicle from './components/Chronicle'
 import './App.sass';
 import Pin from './components/Pin';
 import { useWorldHistory } from './api/events';
 import usePrevious from './api/usePrevious';
-import Timeline from './components/Timeline';
 import { HistoricalEvent } from './types/HistoricalEvent.type';
 
 function App() {
@@ -26,19 +25,12 @@ function App() {
 
   // Génération de pins
   useEffect(()=> {
-    console.log(events)
-    if(points) for (let point of points) point.destroy();
     let pins : Pin[] = [];
     events && events.forEach((event)=> {
       pins.push(new Pin(event));
     });
     setPoints(pins);
   }, [events]);
-
-  // Update de focus
-  useEffect(() => {
-    console.log('focus', focus)
-  }, [focus])
 
   useEffect(()=> {
     // Update de l'année grâce au clavier
@@ -53,7 +45,6 @@ function App() {
         if((decade-20) >= beginning) setDecade(decade => decade-20);
       }
     })
-    // Update du focus au clic sur une année
   }, [])
 
 
@@ -62,8 +53,8 @@ function App() {
     <header>
       <h1> <span>Norn</span> - A timeline of events </h1>
       <h2 className='neon-title'> Welcome in the <span className='decade'>{decade}</span>s ! </h2>
-      <Timeline beginning={beginning} end={end} year={decade} setYear={setDecade}/>
-      <input  id="timeline-html-range"
+     {/*<Timeline beginning={beginning} end={end} year={decade} setYear={setDecade}/>*/}
+      <input  id="timeline-html-ranger"
               type="range"
               min={beginning.toString()} max={end.toString()}       
               step="20" 

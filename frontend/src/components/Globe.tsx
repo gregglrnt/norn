@@ -1,16 +1,9 @@
 import React, { createRef, RefObject } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "three/examples/jsm/libs/stats.module";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
-import { fragmentShader, vertexShader } from "../shaders/shaders";
 import Earth from "./Earth";
 import Pin from "./Pin";
 const cloud = require('../textures/clouds.png');
-
 
 type GlobeProps = {
     pins: Pin[] | undefined,
@@ -28,12 +21,12 @@ export default class Globe extends React.Component<GlobeProps> {
     private camera : THREE.PerspectiveCamera;
     private renderer : THREE.WebGLRenderer;
     private light: THREE.DirectionalLight;
-    private stats: Stats
     private controls: OrbitControls;
     
     // planète
     private earth: Earth
     private sky: THREE.Mesh
+    private pinSphere : THREE.Object3D
 
 
     constructor(props : GlobeProps) {
@@ -61,9 +54,15 @@ export default class Globe extends React.Component<GlobeProps> {
         
         // ajout de la lumière à la scène
         this.scene.add(this.light)
-        this.scene.add(new THREE.AmbientLight(0x4BB4EE, 0.2))
+        this.scene.add(new THREE.AmbientLight(0x4BB4EE, 0.5))
 
         this.earth = new Earth(radius)
+        this.pinSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(radius, 50, 50),
+            new THREE.MeshBasicMaterial({
+                visible: false,
+            })
+        )
         this.sky = new THREE.Mesh(
             new THREE.SphereGeometry(radius + 0.015, 50, 50),
             new THREE.MeshPhongMaterial({
@@ -71,7 +70,6 @@ export default class Globe extends React.Component<GlobeProps> {
                 transparent: true,
             })
         )
-        this.stats = Stats()
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     }
@@ -79,25 +77,15 @@ export default class Globe extends React.Component<GlobeProps> {
     componentDidMount = () => {
         this.earth.name = "Earth"
         this.sky.name = "Sky"
-
         
         // contrôles
         this.controls.enableZoom = false
         this.controls.update()
-        this.globeDiv.current?.appendChild(this.stats.dom)
-
-        const axesHelper = new THREE.AxesHelper( 5 );
-        this.scene.add(axesHelper)
-
-        let cameraHelper = new THREE.ArrowHelper(
-            this.globe.position, 
-            this.camera.position
-        )
-        this.scene.add(cameraHelper)
 
         // on ajoute tout au globe
         this.globe.add(this.earth)
         this.globe.add(this.sky)
+        this.globe.add(this.pinSphere)
         this.scene.add(this.globe)
         
         this.globeDiv.current?.replaceChildren(this.renderer.domElement)
@@ -116,47 +104,13 @@ export default class Globe extends React.Component<GlobeProps> {
             const intersects = raycaster.intersectObjects(this.globe.children, false);
                 if(intersects.length > 0) {
                     const pinSelected = intersects[0].object;
-                    if(pinSelected.name !== 'Sky' && pinSelected.name !== 'Earth') {
-                        const eventID = pinSelected.name.replace('pin_', '')
-                        const eventChronicles = document.getElementsByClassName('chronicles')[0];
-                        for(let otherEvents of eventChronicles.children) {
-                            otherEvents.classList.remove('selected')
-                        }
-                        const eventChronicle = document.getElementById(eventID)
-                        eventChronicle?.classList.add('selected');
-    
+
+                    if(pinSelected.name.includes('pin')) {
+                        this.props.setFocus(pinSelected.name.replace('pin_', ''))
+   
                     }
                 } 
         }); 
-
-
-
-        // post-processing
-        const renderScene = new RenderPass( this.scene, this.camera );
-        
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85)
-        
-        const bloomComposer = new EffectComposer( this.renderer );
-        bloomComposer.renderToScreen = false;
-        bloomComposer.addPass( renderScene );
-        bloomComposer.addPass( bloomPass );
-
-        const finalPass = new ShaderPass(
-            new THREE.ShaderMaterial( {
-                uniforms: {
-                    baseTexture: { value : null },
-                    bloomTexture: {value : bloomComposer.renderTarget2.texture},
-                },
-                vertexShader: vertexShader,
-                fragmentShader: fragmentShader,
-                defines: {},
-            }), 'baseTexture'
-        )
-        finalPass.needsSwap = true;
-
-        const finalComposer = new EffectComposer( this.renderer );
-        finalComposer.addPass( renderScene );
-        finalComposer.addPass( finalPass );
 
         requestAnimationFrame(this.animate)
     
@@ -177,48 +131,60 @@ export default class Globe extends React.Component<GlobeProps> {
 
     animate = () => {
         this.resizeCanvas()
-        this.light.position.x = 500* Math.sin(Date.now() / 10000)
-        this.light.position.z = 500* Math.cos(Date.now() / 10000)
+        this.light.position.x = 500* Math.sin(Date.now() / 5000)
+        this.light.position.z = 500* Math.cos(Date.now() / 5000)
         this.sky.rotation.y += 0.001
         this.renderer.render(this.scene, this.camera)
-        this.stats.update()
         requestAnimationFrame(this.animate)
     }
 
-
+    handlePins = () => {
+        if(this.props.pins) for(let pin of this.props.pins) {
+            //this.globe.add(pin.object)
+            // si le pin existe, alors on le rend visible.
+            const existingPin = this.globe.getObjectByName(pin.getName())
+            if(existingPin) {
+                existingPin.visible = true;
+            } else {
+                //this.globe.add(pin.object)
+                this.pinSphere.add(pin.get())
+                pin.setVisible(true);
+            }
+            // s'il n'existe pas, on l'ajoute et on le rend visible.
+        }
+    }
 
     componentDidUpdate(prevProps : GlobeProps) {
         // set pins on globe
-        if(this.props.pins !== prevProps.pins) {
-            if(this.props.pins) for(let pin of this.props.pins) {
-                this.globe.add(pin.object)
+        if(prevProps.pins && this.props.pins !== prevProps.pins) {
+            for(let oldPin of this.pinSphere.children) {
+                oldPin.visible = false;
             }
+            this.handlePins();
         }
 
         // change focus
-        // TODO: faire en sorte que ça marche :)
         if(this.props.focus !== prevProps.focus) {
-            const pinToFocus = this.globe.getObjectByName(`pin_${this.props.focus}`)
-            /*if(pinToFocus) {
-            const goTo = new THREE.Vector3();
-            goTo.x = pinToFocus.position.x - this.globe.position.x
-            goTo.y = pinToFocus.position.y - this.globe.position.y
-            goTo.z = pinToFocus.position.z - this.globe.position.z
-            let cameraVector = new THREE.Vector3()
-            this.camera.getWorldDirection(cameraVector)
-            const angle = goTo.angleTo(cameraVector)
-            this.globe.rotateX(angle)*/
+            const pinToFocus = this.pinSphere.getObjectByName(`pin_${this.props.focus}`)
                 if(pinToFocus) {
-                    let axis = new THREE.Vector3()
-                    axis.crossVectors(this.camera.position, pinToFocus.position)
-                    axis.normalize()
-                    let angle = this.camera.position.angleTo(pinToFocus.position)
-                    this.globe.rotateOnAxis(axis, angle)
+                    // on change le focus sur le globe
+                    let coeff = 10 / radius;
+                    this.camera.position.x = pinToFocus.position.x * coeff;
+                    this.camera.position.y = pinToFocus.position.y * coeff;
+                    this.camera.position.z = pinToFocus.position.z * coeff;
+                    this.camera.lookAt(this.globe.position)  
+                    // l'évènement sélectionné passe en haut
+                    const eventID = this.props.focus
+                    const eventChronicles = document.getElementsByClassName('chronicles')[0];
 
-                    
-                    /*const quaternion = new THREE.Quaternion()
-                    quaternion.setFromUnitVectors(startVector.normalize(), endVector.normalize())*/
-                       
+                    for(let otherEvents of eventChronicles.children) {
+                        otherEvents.classList.remove('selected')
+                    }
+
+                    if(eventID) {
+                        let eventChronicle = document.getElementById(eventID)
+                        eventChronicle?.classList.add('selected');
+                    }                
                 }
             this.animate()
             this.controls.update()

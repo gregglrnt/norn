@@ -47,7 +47,6 @@ export function useWorldHistory (year : number, previousYear: number | undefined
             }
         }
         events.current = new Map([...thatYear].sort((a, b) => + (a[1].date >= b[1].date)))
-        console.log("in useeffect", events.current)
     }
     }, [year]); 
 
