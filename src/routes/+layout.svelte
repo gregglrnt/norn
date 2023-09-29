@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import { addEventsToPinSphere, animate, createUniverse } from '$lib/three';
 	import { increaseDate, navigateDate } from '$lib/navigation';
-	import '../styles/layout.sass';
-	import Search from '../components/search/Search.svelte';
+	import '@/styles/layout.sass';
+	import Search from '@/components/search/Search.svelte';
 
 	let canvas: HTMLDivElement;
 	let isSearchOpen = false;

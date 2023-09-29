@@ -10,7 +10,7 @@ import {
 	WebGLRenderer
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import type { Chronicle } from '../../types/chronicle'
+import type { Chronicle } from '@/types/chronicle'
 import { Clouds, Earth, PinSphere } from './planets'
 const scene = new Scene()
 

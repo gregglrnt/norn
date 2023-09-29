@@ -1,4 +1,4 @@
-import type { Chronicle } from '../types/chronicle'
+import type { Chronicle } from '@/types/chronicle'
 
 export const getDecade = (date: number): number => {
 	return Math.floor(date / 10) * 10

@@ -1,6 +1,6 @@
 import { get } from "svelte/store";
 import type { LayoutLoad } from "./$types";
-import { date } from "../stores/date";
+import { date } from "@/stores/date";
 import { goto } from "$app/navigation";
 
 export const load : LayoutLoad = () => {

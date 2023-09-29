@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { formatDateToHTMLDateTime } from '$lib/date'
 	import { onMount } from 'svelte'
-	import Card from '../../components/layout/Card.svelte'
-	import { date } from '../../stores/date'
+	import Card from '@/components/layout/Card.svelte'
+	import { date } from '@/stores/date'
 	import type { PageData } from './$types'
 	import { addEventsToPinSphere } from '$lib/three'
 
