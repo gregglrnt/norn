@@ -1,0 +1,16 @@
+<script lang="ts">
+	import { formatDateToHTMLDateTime } from '$lib/date'
+	import Card from '../../components/layout/Card.svelte'
+	import { date } from '../../stores/date'
+	import type { PageData } from './$types'
+
+	export let data: PageData
+</script>
+
+<h1>Welcome in {$date}</h1>
+{#each data.events as event}
+	<Card title={event.title}>
+		<time datetime={formatDateToHTMLDateTime(event.date)}> {event.date.toLocaleDateString()} </time>
+		<p>{event.description}</p>
+	</Card>
+{/each}
