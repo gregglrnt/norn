@@ -1,12 +1,18 @@
 import type { Chronicle } from '../types/chronicle'
 
-const cache = new Map<number, Chronicle[]>()
-
 export const getDecade = (date: number): number => {
 	return Math.floor(date / 10) * 10
 }
+type ExpectedDataFromApi = {
+	date: string
+	coordinates: string
+	title: string
+	description: string
+	id: number
+	centuryId: number
+}[]
 
-export const formatChronicles = (data: any) => {
+export const formatChronicles = (data: ExpectedDataFromApi) => {
 	const res: Chronicle[] = []
 	try {
 		for (const element of data) {
@@ -27,7 +33,7 @@ export const formatChronicles = (data: any) => {
 	return res
 }
 
-const coordinatesToLatLon = (coordinateString: string): [number, number] => {
+export const coordinatesToLatLon = (coordinateString: string): [number, number] => {
 	const coordinates = coordinateString.split(',')
 	return [parseInt(coordinates[0]), parseInt(coordinates[1])]
 }

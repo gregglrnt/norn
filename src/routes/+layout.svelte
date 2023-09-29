@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { animate, createUniverse } from '$lib/three';
+	import { addEventsToPinSphere, animate, createUniverse } from '$lib/three';
 	import { increaseDate, navigateDate } from '$lib/navigation';
 	import '../styles/layout.sass';
 	import Search from '../components/search/Search.svelte';

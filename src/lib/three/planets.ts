@@ -1,32 +1,58 @@
-import { Mesh, MeshBasicMaterial, SphereGeometry, TextureLoader } from 'three'
+import {
+	Mesh,
+	MeshBasicMaterial,
+	SphereGeometry,
+	TextureLoader,
+	type MeshBasicMaterialParameters
+} from 'three'
 import earthImg from './assets/earth.jpg'
 import cloudImg from './assets/clouds.png'
 
 const radius = 30
 
-function Planet(
-	name: string,
-	radius: number,
-	speed: number,
-	texturePath?: string,
-	transparent?: boolean
-): [Mesh, () => void] {
-	const sphere = new SphereGeometry(radius, 30, 30)
-	const props: any = { transparent: transparent || false }
-	if (texturePath) {
-		props.map = new TextureLoader().load(texturePath)
+abstract class Planet {
+	private mesh: Mesh
+	private animate: () => void
+
+	public constructor(
+		name: string,
+		radius: number,
+		speed: number,
+		texturePath?: string,
+		transparent?: boolean
+	) {
+		const sphere = new SphereGeometry(radius, 30, 30)
+		const props: MeshBasicMaterialParameters = { transparent: transparent || false }
+		if (texturePath) {
+			props.map = new TextureLoader().load(texturePath)
+		}
+		const material = new MeshBasicMaterial({ ...props })
+		this.mesh = new Mesh(sphere, material)
+		this.mesh.name = name
+		this.animate = () => {
+			this.mesh.rotation.y += speed
+		}
 	}
-	const material = new MeshBasicMaterial({ ...props })
-	const mesh = new Mesh(sphere, material)
-	mesh.name = name
-	const animate = () => {
-		mesh.rotation.y += speed
+
+	public get(): [Mesh, () => void] {
+		return [this.mesh, this.animate]
 	}
-	return [mesh, animate]
 }
 
-export const Earth = () => Planet('earth', radius, 0.001, earthImg)
+export class Earth extends Planet {
+	public constructor() {
+		super('earth', radius, 0.001, earthImg)
+	}
+}
 
-export const Clouds = () => Planet('clouds', radius + 0.5, 0.005, cloudImg, true)
+export class Clouds extends Planet {
+	public constructor() {
+		super('clouds', radius + 0.5, 0.005, cloudImg, true)
+	}
+}
 
-export const PinSphere = () => Planet('pins', radius, 0.001, undefined, true)
+export class PinSphere extends Planet {
+	public constructor() {
+		super('pins', radius, 0.001, undefined, true)
+	}
+}
