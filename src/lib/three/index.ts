@@ -4,6 +4,7 @@ import {
 	Group,
 	Mesh,
 	MeshBasicMaterial,
+	Object3D,
 	PerspectiveCamera,
 	Scene,
 	SphereGeometry,
@@ -11,7 +12,7 @@ import {
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import type { Chronicle } from '@/types/chronicle'
-import { Clouds, Earth, PinSphere } from './planets'
+import { Clouds, Earth, PLANET_RADIUS, PinSphere } from './planets'
 const scene = new Scene()
 
 let world: WebGLRenderer
@@ -31,7 +32,7 @@ export const createUniverse = () => {
 	camera = new PerspectiveCamera(40, size)
 	controls = new OrbitControls(camera, world.domElement)
 	controls.enableZoom = false
-	camera.position.z = 100
+	camera.position.z = 150
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)
@@ -72,7 +73,7 @@ export const animate = () => {
 }
 
 export const getCoordinatesFromLatLon = (lat: number, lon: number) => {
-	const radius = 3
+	const radius = PLANET_RADIUS + 1 
 	const latRad = lat * (Math.PI / 180)
 	const lonRad = -lon * (Math.PI / 180)
 
@@ -83,20 +84,32 @@ export const getCoordinatesFromLatLon = (lat: number, lon: number) => {
 	return [x, y, z]
 }
 
-export const addEventsToPinSphere = (events: Chronicle[]) => {
-	if (!pinSphere) return
-	const pins = []
-	for (const event of events) {
+const createOrReturnPin = (event: Chronicle) : Object3D => {
+	const existingPin = pinSphere.getObjectByName(`pin_event_${event.id}`)
+	if(existingPin) return existingPin;
 		const pin = new Mesh(
-			new SphereGeometry(0.1, 2, 2),
+			new SphereGeometry(0.5, 2, 2),
 			new MeshBasicMaterial({ color: new Color("#fe0000") }) //TODO: immplement coloration
 		)
-		pin.name = `pin_${event.id}`
+		pin.name = `pin_event_${event.id}`
 		const [x, y, z] = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
 		pin.position.set(x, y, z)
-		pins.push(pin)
+		pinSphere.add(pin);
+		return pin;
+}
+
+export const addEventsToPinSphere = (events: Chronicle[]) => {
+	if (!pinSphere) return
+	pinSphere.children.forEach((p) => p.visible = false)
+	for (const event of events) {
+		const pin = createOrReturnPin(event)
+		pin.visible = true
 	}
-	pinSphere.add(...pins)
-	console.log('pins have been added', scene.children)
-	return pins
+}
+
+export const focusOnPinSphere = (eventId : number) => {
+	if(!pinSphere) return
+	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`)
+	if (!focusedObject) return false
+	console.log("focus on", focusedObject)
 }

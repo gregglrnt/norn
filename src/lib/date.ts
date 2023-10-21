@@ -1,8 +1,10 @@
 import type { Chronicle } from '@/types/chronicle'
+import { formatCountry } from '@/types/country'
 
 export const getDecade = (date: number): number => {
 	return Math.floor(date / 10) * 10
 }
+
 type ExpectedDataFromApi = {
 	date: string
 	coordinates: string
@@ -10,20 +12,25 @@ type ExpectedDataFromApi = {
 	description: string
 	id: number
 	centuryId: number
+	country: {
+		id: number
+		name: string
+		flag?: string
+	}
 }[]
 
 export const formatChronicles = (data: ExpectedDataFromApi) => {
 	const res: Chronicle[] = []
 	try {
 		for (const element of data) {
-			console.log(element)
 			res.push({
 				date: new Date(element.date),
 				coordinates: coordinatesToLatLon(element.coordinates),
 				title: element.title,
 				description: element.description,
 				id: element.id,
-				centuryId: element.centuryId
+				centuryId: element.centuryId,
+				country: formatCountry(element.country)
 			})
 		}
 	} catch (e) {

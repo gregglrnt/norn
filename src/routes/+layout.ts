@@ -1,11 +1,7 @@
-import { get } from "svelte/store";
-import type { LayoutLoad } from "./$types";
-import { date } from "@/stores/date";
-import { goto } from "$app/navigation";
+import type { LayoutLoad } from './$types'
 
-export const load : LayoutLoad = () => {
-    if(get(date) === undefined) {
-        date.set(1515);
-        goto(`/${get(date)}`)
-    }
+export const load: LayoutLoad = () => {
+	return {
+		year: 1515
+	}
 }

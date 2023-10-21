@@ -8,7 +8,7 @@ import {
 import earthImg from './assets/earth.jpg'
 import cloudImg from './assets/clouds.png'
 
-const radius = 30
+export const PLANET_RADIUS = 30
 
 abstract class Planet {
 	private mesh: Mesh
@@ -41,18 +41,18 @@ abstract class Planet {
 
 export class Earth extends Planet {
 	public constructor() {
-		super('earth', radius, 0.001, earthImg)
+		super('earth', PLANET_RADIUS, 0.001, earthImg)
 	}
 }
 
 export class Clouds extends Planet {
 	public constructor() {
-		super('clouds', radius + 0.5, 0.005, cloudImg, true)
+		super('clouds', PLANET_RADIUS + 0.5, 0.005, cloudImg, true)
 	}
 }
 
 export class PinSphere extends Planet {
 	public constructor() {
-		super('pins', radius, 0.001, undefined, true)
+		super('pins', PLANET_RADIUS + 0.1, 0.001, undefined, true)
 	}
 }

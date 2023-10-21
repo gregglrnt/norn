@@ -1,12 +1,10 @@
 import { goto } from '$app/navigation'
-import { get } from 'svelte/store'
-import { setDateFromString, date } from '@/stores/date'
 
-export const navigateDate = (value: string) => {
-	setDateFromString(value)
-	goto(`/${get(date)}`)
-}
+// export const navigateDate = (value: string) => {
+// 	console.log(`goto : ${value}`);
+// 	return `/${value}
+// }
 
-export const increaseDate = (value: 1 | -1) => {
-	goto(`/${get(date) + value}`)
+export const increaseDate = (currentDate: number, value: 1 | -1) => {
+	goto(`/${currentDate + value}`)
 }
