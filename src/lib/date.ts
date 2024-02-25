@@ -1,4 +1,4 @@
-import type { Chronicle } from '@/types/chronicle'
+import type { Fact } from '@/types/fact'
 import { formatCountry } from '@/types/country'
 
 export const getDecade = (date: number): number => {
@@ -20,7 +20,7 @@ type ExpectedDataFromApi = {
 }[]
 
 export const formatChronicles = (data: ExpectedDataFromApi) => {
-	const res: Chronicle[] = []
+	const res: Fact[] = []
 	try {
 		for (const element of data) {
 			res.push({

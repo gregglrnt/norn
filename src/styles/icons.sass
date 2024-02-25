@@ -1,0 +1,16 @@
+.icon
+    &-calendar::before
+        content: url('/svg/calendar.svg')
+    &-pin::before
+        content: url('/svg/pin.svg')
+    &-search::before
+        content: url('/svg/search.svg')
+
+[class^="icon-"]
+    display: flex
+    align-items: center
+    &::before
+        margin-right: 5px
+        display: block
+        height: 1em
+        vertical-align: middle

@@ -1,4 +1,5 @@
 import {
+	AxesHelper,
 	Color,
 	DirectionalLight,
 	Group,
@@ -8,16 +9,19 @@ import {
 	PerspectiveCamera,
 	Scene,
 	SphereGeometry,
+	Vector2,
 	WebGLRenderer
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import type { Chronicle } from '@/types/chronicle'
+import type { Fact } from '@/types/fact'
 import { Clouds, Earth, PLANET_RADIUS, PinSphere } from './planets'
 const scene = new Scene()
 
 let world: WebGLRenderer
 let controls: OrbitControls
 let camera: PerspectiveCamera
+
+const pointer = new Vector2()
 
 const light = new DirectionalLight(0xfff2cc, 1)
 const group = new Group()
@@ -26,10 +30,10 @@ const animateFunctions: (() => void)[] = []
 
 let pinSphere: Mesh
 
-export const createUniverse = () => {
+export const renderUniverse = () => {
 	world = new WebGLRenderer({ alpha: true })
 	const size = window.innerWidth / 2 / window.innerHeight
-	camera = new PerspectiveCamera(40, size)
+	camera = new PerspectiveCamera(60, size)
 	controls = new OrbitControls(camera, world.domElement)
 	controls.enableZoom = false
 	camera.position.z = 150
@@ -43,6 +47,8 @@ export const createUniverse = () => {
 	group.add(earth, clouds, pins)
 	pinSphere = pins
 	scene.add(group)
+	const axesHelper = new AxesHelper(100)
+	scene.add(axesHelper)
 	return world
 }
 
@@ -84,12 +90,12 @@ export const getCoordinatesFromLatLon = (lat: number, lon: number) => {
 	return [x, y, z]
 }
 
-const createOrReturnPin = (event: Chronicle) : Object3D => {
+const createOrReturnPin = (event: Fact) : Object3D => {
 	const existingPin = pinSphere.getObjectByName(`pin_event_${event.id}`)
 	if(existingPin) return existingPin;
 		const pin = new Mesh(
-			new SphereGeometry(0.5, 2, 2),
-			new MeshBasicMaterial({ color: new Color("#fe0000") }) //TODO: immplement coloration
+			new SphereGeometry(0.5, 10, 10),
+			new MeshBasicMaterial({ color: new Color("#D84797") }) //TODO: immplement coloration
 		)
 		pin.name = `pin_event_${event.id}`
 		const [x, y, z] = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
@@ -98,7 +104,7 @@ const createOrReturnPin = (event: Chronicle) : Object3D => {
 		return pin;
 }
 
-export const addEventsToPinSphere = (events: Chronicle[]) => {
+export const addEventsToPinSphere = (events: Fact[]) => {
 	if (!pinSphere) return
 	pinSphere.children.forEach((p) => p.visible = false)
 	for (const event of events) {
@@ -111,5 +117,11 @@ export const focusOnPinSphere = (eventId : number) => {
 	if(!pinSphere) return
 	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`)
 	if (!focusedObject) return false
-	console.log("focus on", focusedObject)
+	console.log("focus on", focusedObject, camera.position)
+	//camera.position.copy(new Vector3(focusedObject.position.x, focusedObject.position.y, camera.position.z))
+}
+
+export const pointerListener = (event : PointerEvent) => {
+	pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 }

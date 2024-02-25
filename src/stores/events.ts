@@ -1,6 +1,6 @@
+import type { Fact } from '@/types/fact'
 import { writable } from 'svelte/store'
-import type { Chronicle } from '@/types/chronicle'
 
-export const events = writable<Chronicle[]>([])
+export const events = writable<Fact[]>([])
 
-export const currentEvent = writable<Chronicle>()
+export const currentEvent = writable<Fact>()

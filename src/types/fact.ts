@@ -1,6 +1,6 @@
 import type { Country } from "./country"
 
-export type Chronicle = {
+export type Fact = {
     date: Date,
     centuryId: number,
     coordinates: number[],

@@ -36,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"@types/three": "^0.156.0",
+		"svelte-icons-pack": "^2.1.0",
 		"three": "^0.156.1"
 	}
 }
