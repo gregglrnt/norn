@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { animate, renderUniverse, focusOnPinSphere, pointerListener } from "@/animation/rendering"
-	import { increaseDate } from "@/interact/navigation";
 	import Search from '@/components/search/Search.svelte'
 	import { page } from '$app/stores'
 	import { currentEvent } from '@/stores/events'
 	import { isSearchOpen, listenForCommands } from '@/interact/commands'
 	import "@/styles/layout.sass"
-	import Welcome from '@/components/layout/Welcome.svelte'
+	import Header from '@/components/layout/Header.svelte'
 	import Controls from '@/components/layout/Controls.svelte'
 
 	let canvas: HTMLDivElement
@@ -32,7 +31,7 @@
 <main class="container">
 	<slot/>
 	<div id="canvas" bind:this={canvas} />
-	<Welcome></Welcome>
+	<Header/>
 	<Controls/>
 	<Search/>
 </main>

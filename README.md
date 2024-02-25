@@ -1,25 +1,20 @@
+# The Norn Broadcast 🎧
+Norn is a playlist for history. Soon, it will be enhanced with a bit of historical music, but as of now, it is more like a search engine for historic events.
 
-TODO : 
-- The Wheel opens the Menu, all around the Earth, with : 
-    - search
-    - music
-    - add an event
-- Music plays in the background according to the year (antiquity, medieval, renaissance, classical, rock)
-- You can add an event to the library
-- Like a year. It is a cookie
-
-- Format calendar with different calendars possibility : 
-const options = {
-  calendar: "hebrew",
-  dateStyle: "long"
-}
-
-var dateFormat = new Intl.DateTimeFormat("en", options);
-var usedOptions = dateFormat.resolvedOptions();
-
-console.log(usedOptions.calendar)
-
-const i = dateFormat.format(new Date());
-
-console.log(i)
-cf https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#ca
+## TODO : 
+- [ ] 🛞 The Wheel opens the Menu, all around the Earth (WIP), with : 
+    - [x] search by year
+    - [ ] filter by country
+    - [ ] music
+    - [ ] add an event
+- [ ] 🎶 Music plays in the background according to the year (antiquity, medieval, renaissance, classical, rock)
+- [ ] 📝 You can edit an event
+- [ ] ✍️ You can add an event to the library
+- [ ] 💖 You can like a year
+- [ ] 👆 You can interact with the timeline
+- [ ] 🧵 Timeline looks like the threads of mythology (cf. norns)
+- [x] 📅 Format calendar with different calendars possibility
+- [ ] 🔎 Clicking of the "focus" button centers Earth on a specific event
+- [ ] 🏴 The pins are colored following the flag of the country
+- [ ] 🔎 Clicking on the pin will focus on the event.
+- [ ] 👋 The Header component is more interactive. It can display the number of events, the country selected, its flag, and maybe a "featured" event.
