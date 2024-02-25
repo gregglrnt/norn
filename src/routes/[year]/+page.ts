@@ -19,8 +19,8 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
 	return {
 		events: get(events)
-			.filter((ev) => ev.date.getFullYear() >= decade && decade + 10 >= ev.date.getFullYear())
-			.sort((ev) => (ev.date.getFullYear() === year ? -1 : 1)),
+			.filter((ev) => ev.date.year>= decade && decade + 10 >= ev.date.year)
+			.sort((ev) => (ev.date.year === year ? -1 : 1)),
 		year,
 		decade
 	}

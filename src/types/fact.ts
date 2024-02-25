@@ -1,7 +1,8 @@
+import type { DateTime } from "luxon"
 import type { Country } from "./country"
 
 export type Fact = {
-    date: Date,
+    date: DateTime,
     centuryId: number,
     coordinates: number[],
     description: string,
