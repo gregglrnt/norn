@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { isSearchOpen } from '@/interact/commands'
-	import { calendarType, year } from '@/stores/date'
+	import { calendarType, year, type CalendarType } from '@/stores/date'
 	import Tiltle from '../layout/Tiltle.svelte'
 	import Bubble from '../templates/Bubble.svelte'
 	import Button from '../ui/Button.svelte'
 	import { pauseHistory } from '@/interact/play'
+	import type { CalendarSystem } from 'luxon'
 
 	let value: string;
 	pauseHistory();
 
 	$ : {
-		if (!$isSearchOpen) value = $year
+		if (!$isSearchOpen) value = $year.toString()
 	}
 
 	const search = (event: any) => {
@@ -24,7 +25,7 @@
 	}
 
 	const switchCalendar = (select : HTMLSelectElement) => {
-		const calendar = select.value;
+		const calendar = select.value as CalendarType;
 		calendarType.set(calendar);
 	}
 
@@ -55,11 +56,11 @@
 			<div class="field">
 				<label for="calendar"> The calendar format ? </label>
 				<select id="calendar" on:change={(e) => switchCalendar(e.currentTarget)}>
-					<option value="gregory" selected={$calendarType === "gregory"}>gregory (default) 🇻🇦 </option>
+					<option value="iso8601" selected={$calendarType === "iso8601"}>gregorian (default) 🇻🇦 </option>
 					<option value="persian" selected={$calendarType === "persian"}>persian 🇮🇷 </option>
 					<option value="islamic" selected={$calendarType === "islamic"}>islamic ☪️</option>
 					<option value="chinese" selected={$calendarType === "chinese"}>chinese 🇨🇳</option>
-					<option value="ethiopia" selected={$calendarType === "ethiopia"}>ethiopia 🇪🇹</option>
+					<option value="indian" selected={$calendarType === "indian"}>indian 🕉️</option>
 					<option value="coptic" selected={$calendarType === "coptic"}>coptic ✝️</option>
 					<option value="japanese" selected={$calendarType === "japanese"}>japanese 🇯🇵</option>
 					<option value="buddhist" selected={$calendarType === "buddhist"}>buddhist 🕉️</option>

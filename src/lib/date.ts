@@ -1,5 +1,6 @@
 import type { Fact } from '@/types/fact'
 import { formatCountry } from '@/types/country'
+import { DateTime } from 'luxon'
 
 export const getDecade = (date: number): number => {
 	return Math.floor(date / 10) * 10
@@ -24,7 +25,7 @@ export const formatChronicles = (data: ExpectedDataFromApi) => {
 	try {
 		for (const element of data) {
 			res.push({
-				date: new Date(element.date),
+				date: DateTime.fromISO(element.date),
 				coordinates: coordinatesToLatLon(element.coordinates),
 				title: element.title,
 				description: element.description,
