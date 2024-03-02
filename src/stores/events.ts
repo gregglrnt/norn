@@ -3,4 +3,4 @@ import { writable } from 'svelte/store'
 
 export const events = writable<Fact[]>([])
 
-export const currentEvent = writable<Fact>()
+export const currentEvent = writable<number>()

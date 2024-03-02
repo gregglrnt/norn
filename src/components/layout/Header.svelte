@@ -2,7 +2,7 @@
 	import { calendarType } from "@/stores/date"
 	import Help from "../ui/Help.svelte"
 	import { year } from "@/stores/date"
-    import Wheel from "../ui/Wheel.svelte"
+    import WheelButton from "../ui/WheelButton.svelte"
 
 </script>
 
@@ -12,7 +12,7 @@
     <p class="undertitle italic">Go through history like a good playlist</p>
     <p> <strong>A lot of stuff happened in {$year}.</strong> You can explore them with the cards on your left. Otherwise, if it's not good enough, use your controls on the bottom.</p>
     <Help/>
-    <Wheel/>
+    <WheelButton/>
 </header>
 
 <style lang="sass">

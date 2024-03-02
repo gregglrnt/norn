@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { animate, renderUniverse, focusOnPinSphere, pointerListener } from "@/animation/rendering"
+	import { animate, renderUniverse, focusOnPinSphere } from "@/animation/rendering"
 	import Search from '@/components/search/Search.svelte'
 	import { page } from '$app/stores'
 	import { currentEvent } from '@/stores/events'
@@ -11,12 +11,7 @@
 
 	let canvas: HTMLDivElement
 
-	$ : {
-		if($currentEvent) focusOnPinSphere($currentEvent.id)
-	}
-
 	onMount(() => {
-		document.addEventListener('pointermove', pointerListener)
 		const world = renderUniverse()
 		canvas.replaceChildren(world.domElement)
 		animate()

@@ -46,4 +46,5 @@
         width: 100%
         max-width: 100vw
         gap: 1rem
+        background: var(--background-color)
 </style>
