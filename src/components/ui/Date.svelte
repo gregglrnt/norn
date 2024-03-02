@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { calendarType, getFullDate } from '@/stores/date'
-	import type { DateTime } from 'luxon'
-	export let src: DateTime
+	export let src: Date
 	let className: string
 	export { className as class }
 

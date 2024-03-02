@@ -9,5 +9,7 @@ export const increaseDate = (amount : -1 | 1 = 1) => {
 
 export const increaseDecade = (amount : -1 | 1 = 1) => {
     const date = get(page).data.year;
-    goto((date + (amount * 10)).toString())
+    setTimeout(() => {
+        goto((date + (amount * 10)).toString())
+    }, 250)
 }

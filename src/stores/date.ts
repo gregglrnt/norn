@@ -22,8 +22,8 @@ export const yearOutOfBounds = (year: number): boolean => {
 export const MINYEAR = -800
 export const MAXYEAR = new Date().getFullYear()
 
-const formatDate = (date: DateTime) => {
-    return date.reconfigure({ outputCalendar: get(calendarType), locale: "en-us" })
+const formatDate = (d: DateTime) => {
+    return d.reconfigure({ outputCalendar: get(calendarType), locale: "en-us" })
 }
 
 export const year = derived([page, calendarType], () => {
@@ -42,7 +42,7 @@ export const getYear = (date: DateTime) => {
 }
 
 
-export const getFullDate = (date: DateTime) => {
-    const formattedDate = formatDate(date);
+export const getFullDate = (date: Date) => {
+    const formattedDate = formatDate(DateTime.fromJSDate(date));
     return formattedDate.toLocaleString({ month: "long", day: "2-digit" }) + `, ${getYear(formattedDate)}`
 }

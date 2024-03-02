@@ -25,7 +25,7 @@ export const formatChronicles = (data: ExpectedDataFromApi) => {
 	try {
 		for (const element of data) {
 			res.push({
-				date: DateTime.fromISO(element.date),
+				date: DateTime.fromISO(element.date).toJSDate(),
 				coordinates: coordinatesToLatLon(element.coordinates),
 				title: element.title,
 				description: element.description,
@@ -44,14 +44,4 @@ export const formatChronicles = (data: ExpectedDataFromApi) => {
 export const coordinatesToLatLon = (coordinateString: string): [number, number] => {
 	const coordinates = coordinateString.split(',')
 	return [parseInt(coordinates[0]), parseInt(coordinates[1])]
-}
-
-export const formatDateToHTMLDateTime = (date: Date) => {
-	return (
-		date.getFullYear() +
-		'-' +
-		date.getMonth().toString().padStart(2, '0') +
-		'-' +
-		date.getDay().toString().padStart(2, '0')
-	)
 }
