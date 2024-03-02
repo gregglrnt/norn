@@ -14,8 +14,6 @@
 	$ : {
 		if($currentEvent) focusOnPinSphere($currentEvent.id)
 	}
-	//export let data: LayoutData
-	console.log("p", $page.data.year);
 
 	onMount(() => {
 		document.addEventListener('pointermove', pointerListener)

@@ -1,27 +1,21 @@
-import { formatChronicles, getDecade } from '$lib/date'
-import { get } from 'svelte/store'
-import { MAXYEAR, MINYEAR, century, setCentury, yearOutOfBounds } from '../../stores/date'
-import type { PageLoad } from './$types'
-import { events } from '../../stores/events'
-import { error } from '@sveltejs/kit'
+import { events } from "@/stores/events";
+import type { PageLoad } from "./$types";
+import { get } from "svelte/store";
+import { getDecade } from "@/lib/date";
 
-export const load: PageLoad = async ({ fetch, params }) => {
-	const year = parseInt(params.year)
-	if (isNaN(year) || yearOutOfBounds(year)) error(404, `Should be a number between ${MINYEAR} and ${MAXYEAR}`)
-	const decade = getDecade(year)
-	const centuryUpdated = setCentury(year)
-	if (centuryUpdated) {
-		console.log('century updated', get(century))
-		const res = await fetch(`http://localhost:8000/century/${get(century)}`)
-		const newEvents = await res.json().then(json => formatChronicles(json))
-		events.set(newEvents)
-	}
+export const load : PageLoad = ({data, params}) => {
+    const {centuryUpdated, newEvents} = data;
+    if(centuryUpdated) {
+        events.set(newEvents);
+    }
+    const currentYear= Number(params.year);
+    const currentEvents = get(events).filter((event) => {
+        return event.date.getFullYear() < currentYear + 10 && event.date.getFullYear() > currentYear - 10
+    }).sort()
 
-	return {
-		events: get(events)
-			.filter((ev) => ev.date.year>= decade && decade + 10 >= ev.date.year)
-			.sort((ev) => (ev.date.year === year ? -1 : 1)),
-		year,
-		decade
-	}
+    return {
+        events: currentEvents,
+        decade: getDecade(Number(params.year)),
+        year: Number(params.year),
+    }
 }

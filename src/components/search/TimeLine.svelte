@@ -4,9 +4,6 @@
 	import { derived, get } from "svelte/store"
 
     const timeLength = Math.abs(MAXYEAR) + Math.abs(MINYEAR)
-
-    console.log(timeLength)
-
     const width = derived(page, ($page) => (parseInt($page.data.year) + Math.abs(MINYEAR)) / timeLength)
 
 </script>

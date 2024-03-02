@@ -1,12 +1,12 @@
 
 import { writable } from "svelte/store"
-import { increaseDate } from "./navigation"
+import { increaseDecade } from "./navigation"
 
 export const isSearchOpen = writable<boolean>(false)
 
 const commands: Map<KeyboardEvent["key"], () => void> = new Map([
-    ['ArrowRight', () => { increaseDate() }],
-    ['ArrowLeft', () => increaseDate(-1)],
+    ['ArrowRight', () => { increaseDecade() }],
+    ['ArrowLeft', () => increaseDecade(-1)],
     ['i', () => isSearchOpen.set(true)]
 ])
 
