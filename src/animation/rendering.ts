@@ -1,6 +1,4 @@
 import {
-	AxesHelper,
-	Color,
 	DirectionalLight,
 	Group,
 	Mesh,
@@ -9,19 +7,17 @@ import {
 	PerspectiveCamera,
 	Scene,
 	SphereGeometry,
-	Vector2,
 	WebGLRenderer
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import type { Fact } from '@/types/fact'
 import { Clouds, Earth, PLANET_RADIUS, PinSphere } from './planets'
+import { currentEvent } from '@/stores/events'
 const scene = new Scene()
 
 let world: WebGLRenderer
 let controls: OrbitControls
 let camera: PerspectiveCamera
-
-const pointer = new Vector2()
 
 const light = new DirectionalLight(0xfff2cc, 1)
 const group = new Group()
@@ -36,6 +32,8 @@ export const renderUniverse = () => {
 	camera = new PerspectiveCamera(60, size)
 	controls = new OrbitControls(camera, world.domElement)
 	controls.enableZoom = false
+	controls.autoRotate = true
+	controls.autoRotateSpeed = 0.2
 	camera.position.z = 150
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
@@ -47,8 +45,6 @@ export const renderUniverse = () => {
 	group.add(earth, clouds, pins)
 	pinSphere = pins
 	scene.add(group)
-	const axesHelper = new AxesHelper(100)
-	scene.add(axesHelper)
 	return world
 }
 
@@ -95,8 +91,9 @@ const createOrReturnPin = (event: Fact) : Object3D => {
 	if(existingPin) return existingPin;
 		const pin = new Mesh(
 			new SphereGeometry(0.5, 10, 10),
-			new MeshBasicMaterial({ color: new Color("#D84797") }) //TODO: immplement coloration
+			new MeshBasicMaterial({ color: "#D84797" }) //TODO: immplement coloration
 		)
+		pin.geometry.computeBoundingSphere();
 		pin.name = `pin_event_${event.id}`
 		const [x, y, z] = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
 		pin.position.set(x, y, z)
@@ -116,12 +113,9 @@ export const addEventsToPinSphere = (events: Fact[]) => {
 export const focusOnPinSphere = (eventId : number) => {
 	if(!pinSphere) return
 	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`)
-	if (!focusedObject) return false
-	console.log("focus on", focusedObject, camera.position)
-	//camera.position.copy(new Vector3(focusedObject.position.x, focusedObject.position.y, camera.position.z))
+	if (!focusedObject) return
+	const dist = camera.position.length()
+	camera.position.copy(focusedObject.position).normalize().multiplyScalar(dist)
+    currentEvent.set(eventId);
 }
 
-export const pointerListener = (event : PointerEvent) => {
-	pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-}

@@ -46,7 +46,7 @@
             width: 0
             white-space: nowrap
             overflow: hidden
-            transition: ease-in 0.2s
+            transition: all ease-in-out 0.2s
             color: var(--highlight-color)
 
 

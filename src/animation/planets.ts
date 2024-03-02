@@ -41,7 +41,7 @@ abstract class Planet {
 
 export class Earth extends Planet {
 	public constructor() {
-		super('earth', PLANET_RADIUS, 0.001, earthImg)
+		super('earth', PLANET_RADIUS, 0, earthImg)
 	}
 }
 
@@ -53,6 +53,6 @@ export class Clouds extends Planet {
 
 export class PinSphere extends Planet {
 	public constructor() {
-		super('pins', PLANET_RADIUS + 0.1, 0.001, undefined, true)
+		super('pins', PLANET_RADIUS + 0.1, 0, undefined, true)
 	}
 }
