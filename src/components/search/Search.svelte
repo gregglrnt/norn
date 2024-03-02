@@ -7,6 +7,7 @@
 	import Button from '../ui/Button.svelte'
 	import { pauseHistory } from '@/interact/play'
 	import type { CalendarSystem } from 'luxon'
+	import LikedYears from './LikedYears.svelte'
 
 	let value: string;
 	pauseHistory();
@@ -31,7 +32,7 @@
 
 </script>
 
-<div id="search" class={$isSearchOpen ? 'open' : undefined}>
+<div id="search">
 	<Bubble class="search-bubble">
 		<button class="close-search" on:click={() => closeSearch()}>
 			Close this
@@ -69,6 +70,7 @@
 			</div>
 			<Button primary on:click={search}>Search this</Button>
 		</form>
+		<LikedYears/>
 	</Bubble>
 </div>
 
@@ -85,8 +87,8 @@
 		flex-direction: column
 		background: rgba(0, 0, 0, 0.2)
 
-		&:not(.open)
-			display: none
+		// &:not(.open)
+		// 	display: none
 
 	:global(.search-bubble)
 		min-height: 30%

@@ -1,5 +1,5 @@
 <div class="help">
-    <p> You can also use these shortcuts: </p>
+    <p> You can use these shortcuts: </p>
     <ul>
         <li><kbd>Left</kbd> to go back in time</li>
         <li><kbd>Right</kbd> to go forward in time</li>

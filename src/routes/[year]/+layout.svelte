@@ -26,7 +26,9 @@
 	<div id="canvas" bind:this={canvas} />
 	<Header/>
 	<Controls/>
-	<Search/>
+	{#if $isSearchOpen}
+		<Search/> 
+	{/if}
 </main>
 
 <style lang="sass">
