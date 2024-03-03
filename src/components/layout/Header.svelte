@@ -10,7 +10,9 @@
     <p class="overtitle"><span class="logo">Norn</span> - Your history broadcast <br/> Brought to you by @gregglrnt <br/> Currently using the <strong>{$calendarType}</strong> calendar </p>
 	<h1>This is <button id="year"> {$year} </button>!</h1>
     <p class="undertitle italic">Go through history like a good playlist</p>
-    <p> <strong>A lot of stuff happened in {$year}.</strong> You can explore them with the cards on your left. Otherwise, if it's not good enough, use your controls on the bottom.</p>
+    <p> 
+        For now, the events displayed are in the decade before and after the year chosen.
+    </p>
     <Help/>
     <WheelButton/>
 </header>

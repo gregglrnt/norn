@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
-	import { MAXYEAR, MINYEAR } from "@/stores/date"
+	import { MAXYEAR, MINYEAR, year } from "@/stores/date"
 	import Control from "../ui/Control.svelte"
 	import { increaseDecade } from "@/interact/navigation"
 	import TimeLine from "../search/TimeLine.svelte"
 	import { pauseHistory, playHistory } from "@/interact/play"
+	import { addLike, getFavoriteYears, isFavorite } from "@/interact/user"
+	import { page } from "$app/stores"
+	import Like from "../controls/Like.svelte"
 
     let playing = false
 
-    $: console.log("playing", playing);
-    
     const play = () => {
         playing = true;
         playHistory()
@@ -26,11 +27,13 @@
 
 </script>
 <div id="controls">
-    <Control type="shuffle" action={shuffle} title="Random year!"/>
-    <Control type="backward" action={() => increaseDecade(-1)} title="Go back 10 years"/>
-    <Control type={playing ? "pause" : "play"} action={playing ? pause : play} title={playing ? "Let's stop here" : "Play automatically"}/>
-    <Control type="forward" action={() => increaseDecade(1)} title="Go forward 10 years"/>
-    <Control type="like" action={() => {}} title="Like this year"/>
+    <Control type="shuffle" on:click={shuffle} title="Random year!"/>
+    <Control type="backward" on:click={() => increaseDecade(-1)} title="Go back 10 years"/>
+    <Control type={playing ? "pause" : "play"} on:click={playing ? pause : play} title={playing ? "Let's stop here" : "Play automatically"}/>
+    <Control type="forward" on:click={() => increaseDecade(1)} title="Go forward 10 years"/>
+    {#key $year}
+        <Like/>
+    {/key}
     <TimeLine/>
 </div>
 
