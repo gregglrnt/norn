@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { animate, renderUniverse, focusOnPinSphere } from "@/animation/rendering"
-	import Search from '@/components/search/Search.svelte'
 	import { page } from '$app/stores'
 	import { currentEvent } from '@/stores/events'
 	import { isSearchOpen, listenForCommands } from '@/interact/commands'
 	import "@/styles/layout.sass"
 	import Header from '@/components/layout/Header.svelte'
 	import Controls from '@/components/layout/Controls.svelte'
+	import Wheel from '@/components/wheel/Wheel.svelte'
 
 	let canvas: HTMLDivElement
 
@@ -27,7 +27,7 @@
 	<Header/>
 	<Controls/>
 	{#if $isSearchOpen}
-		<Search/> 
+		<Wheel/> 
 	{/if}
 </main>
 

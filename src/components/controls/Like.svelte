@@ -29,7 +29,11 @@
     .like
         span 
             color: var(--stress-color)
+            display: none
 
-        &:hover :global(path)
-            fill: var(--stress-color)
+        &:hover 
+            span
+                display: block
+            :global(path)
+                fill: var(--stress-color)
 </style>
