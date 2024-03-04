@@ -32,6 +32,8 @@ strong
 
 button, input, textarea
     all: unset
+    &:hover
+        cursor: pointer
 
 input 
     border: 1px dashed var(--background-color)
@@ -39,3 +41,14 @@ input
 
     &:focus, &:hover
         background: #ccc
+
+.center
+    text-align: center
+
+#left-gutter
+    &>*:first-child, &>*:last-child
+        justify-self: end
+        transform: translateX(30px)
+
+    &>*:nth-child(2), &>*:nth-last-child(2)
+        justify-self: end 

@@ -7,26 +7,20 @@
     // export let bg: string = "transparent";
 </script>
 
-<button class={`button ${primary ? "primary": undefined} ${className}`} title={title} disabled={disabled}>
+<button class={`button ${primary ? "primary": undefined} ${className}`} title={title} disabled={disabled} on:click>
     <span><slot/></span>
 </button>
 
 <style lang="sass">
     .button
         all: unset
-        padding: 5px 10px
+        padding: 5px 30px
         border: 1px solid transparent
-
-        &.primary
-            transform: skewX(-4deg)
-            border: 1px solid black
-            padding: 5px 20px
-
-            span
-                transform: skewX(4deg)
+        background: #c2c2c2
+        border-radius: 8px
+        margin: auto
 
         &:hover
             cursor: pointer
             background: var(--highlight-color)
-            border-radius: 8px
 </style>

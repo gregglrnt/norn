@@ -2,7 +2,7 @@
 	import { isSearchOpen } from "@/interact/commands"
 
 </script>
-<button on:click={() => isSearchOpen.set(true)}>
+<button on:click={() => isSearchOpen.set(!$isSearchOpen)}>
 	<svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 64 64"
 		><path
 			fill="white"
