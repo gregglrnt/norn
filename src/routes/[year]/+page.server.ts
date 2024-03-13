@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	let newEvents : Fact[] = [];
 	if (centuryUpdated) {
 		console.log('century updated', get(century))
-		const res = await fetch(`http://localhost:8000/century/${get(century)}`, {
+		const res = await fetch(`http://localhost:8000/events/${get(century)}`, {
             headers: [[
                 "Authorization", env.API_TOKEN || "",
             ]]

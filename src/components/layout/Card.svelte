@@ -15,7 +15,7 @@
     <Tiltle> {fact.title} </Tiltle>
     <div class="info">
         <span class="pin">{key}</span>
-        <span class="icon-pin address"> {fact.country?.name || ""} </span>
+        <span class="icon-pin address"> {fact.country?.label || ""} </span>
         <Date class="icon-calendar" src={fact.date}/>
     </div>
     <p>

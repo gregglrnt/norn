@@ -10,7 +10,7 @@ export const load : PageLoad = ({data, params}) => {
     }
     const currentYear= Number(params.year);
     const currentEvents = get(events).filter((event) => {
-        return event.date.getFullYear() < currentYear + 10 && event.date.getFullYear() > currentYear - 10
+        return event.date.year < currentYear + 10 && event.date.year > currentYear - 10
     }).sort()
 
     return {

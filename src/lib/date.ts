@@ -1,4 +1,4 @@
-import type { Fact } from '@/types/fact'
+import type { DateWithFormat, Fact } from '@/types/fact'
 import { formatCountry } from '@/types/country'
 import { DateTime } from 'luxon'
 
@@ -16,16 +16,31 @@ type ExpectedDataFromApi = {
 	country: {
 		id: number
 		name: string
+		label: string
 		flag?: string
 	}
 }[]
+
+const formatDate  = (value: string) : DateWithFormat => {
+	const isISO = isNaN(Number(value));
+	if(isISO) return {
+		value: DateTime.fromISO(value).toJSDate(),
+		format: "full",
+		year: parseInt(value)
+	}
+	return {
+		value: DateTime.fromObject({year: parseInt(value)}).toJSDate(),
+		format: "year",
+		year: parseInt(value)
+	}
+}
 
 export const formatChronicles = (data: ExpectedDataFromApi) => {
 	const res: Fact[] = []
 	try {
 		for (const element of data) {
 			res.push({
-				date: DateTime.fromISO(element.date).toJSDate(),
+				date: formatDate(element.date),
 				coordinates: coordinatesToLatLon(element.coordinates),
 				title: element.title,
 				description: element.description,
