@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { calendarType, type CalendarType } from "@/stores/date"
 	import Bubble from "../templates/Bubble.svelte"
+	import { isSearchOpen } from "@/interact/commands"
     const switchCalendar = (select : HTMLSelectElement) => {
 		const calendar = select.value as CalendarType;
 		calendarType.set(calendar);

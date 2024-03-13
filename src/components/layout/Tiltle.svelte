@@ -12,7 +12,8 @@
         transform: skewY(-2deg)
         text-decoration: underline var(--highlight-color)
         text-underline-offset: 10px
-        margin: 0 0 30px 30px
+        margin: 0 0 1rem 1rem
+        text-shadow: 2px 2px 2px rgba(206,89,55,0.15)
 
         &.stress
             text-decoration-color: var(--stress-color)

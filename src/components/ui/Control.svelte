@@ -44,13 +44,16 @@
         gap: 5px
         transition: ease-in-out 0.5s
 
+        :global(svg)
+            height: 2rem
+            aspect-ratio: 1
+
         span
             width: 0
             white-space: nowrap
             overflow: hidden
             transition: all ease-in-out 0.2s
             color: var(--highlight-color)
-
 
         &:hover
             cursor: pointer

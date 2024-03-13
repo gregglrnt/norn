@@ -15,9 +15,9 @@
 $background: linear-gradient(100deg, rgba(255,255,255,0.7) 0%, rgba(217,217,217,1) 0%, rgba(217,217,217,0.9164040616246498) 100%)
 
 .bubble
-    padding: 20px
+    padding: 1rem
     background: $background
-    border-radius: 23px
+    border-radius: 1rem
     color: var(--background-color)
     position: relative
     display: flex

@@ -1,9 +1,9 @@
 import {
+	Color,
 	DirectionalLight,
 	Group,
 	Mesh,
 	MeshBasicMaterial,
-	Object3D,
 	PerspectiveCamera,
 	Scene,
 	SphereGeometry,
@@ -34,7 +34,7 @@ export const renderUniverse = () => {
 	controls.enableZoom = false
 	controls.autoRotate = true
 	controls.autoRotateSpeed = 0.2
-	camera.position.z = 150
+	camera.position.z = 100
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)
@@ -86,14 +86,17 @@ export const getCoordinatesFromLatLon = (lat: number, lon: number) => {
 	return [x, y, z]
 }
 
-const createOrReturnPin = (event: Fact) : Object3D => {
+type Pin = Mesh<SphereGeometry, MeshBasicMaterial>;
+
+const createOrReturnPin = (event: Fact) : Pin => {
 	const existingPin = pinSphere.getObjectByName(`pin_event_${event.id}`)
-	if(existingPin) return existingPin;
-		const pin = new Mesh(
+	if(existingPin) return existingPin as Pin;
+		const pin : Pin = new Mesh(
 			new SphereGeometry(0.5, 10, 10),
 			new MeshBasicMaterial({ color: "#D84797" }) //TODO: immplement coloration
 		)
 		pin.geometry.computeBoundingSphere();
+		// pin.material.color = "red";
 		pin.name = `pin_event_${event.id}`
 		const [x, y, z] = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
 		pin.position.set(x, y, z)
@@ -112,8 +115,10 @@ export const addEventsToPinSphere = (events: Fact[]) => {
 
 export const focusOnPinSphere = (eventId : number) => {
 	if(!pinSphere) return
-	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`)
+	for(const p of pinSphere.children) (p as Pin).material.color = new Color("#D84797");
+	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`) as Pin
 	if (!focusedObject) return
+	focusedObject.material.color = new Color("#53FCAB");
 	const dist = camera.position.length()
 	camera.position.copy(focusedObject.position).normalize().multiplyScalar(dist)
     currentEvent.set(eventId);

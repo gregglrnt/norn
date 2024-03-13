@@ -18,6 +18,9 @@
 
 <div class="page">
 	<div class="cards">
+	{#if data.events.length === 0}
+	<span class="nthg"> Nothing here ... 😴</span>
+	{/if}
 	{#each data.events as event}
 	<Card key={event.id} fact={event}/>
 	{/each}
@@ -30,7 +33,7 @@
 	padding: 20px
 	overflow-y: scroll
 	scrollbar-width: thin
-	scrollbar-color: #000c29var(--background-color)
+	scrollbar-color: #000c29 var(--background-color)
 	position: relative
 	max-height: 80vh
 
@@ -39,4 +42,7 @@
 	flex-direction: column
 	justify-content: flex-end
 	gap: 15px
+
+.nthg
+	color: #474747
 </style>
