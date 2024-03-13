@@ -45,7 +45,6 @@
         display: flex
         flex-wrap: wrap
         justify-content: center
-        padding-bottom: 20px
         width: 100%
         max-width: 100vw
         gap: 1rem

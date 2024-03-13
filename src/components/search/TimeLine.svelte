@@ -29,7 +29,7 @@
 <style lang="sass">
     .time-line
         flex-basis: 100%
-        margin: 20px
+        margin: 0.5rem
         padding: 10px 0
 
         &:hover

@@ -44,5 +44,5 @@ export const getYear = (date: DateTime) => {
 
 export const getFullDate = (date: Date) => {
     const formattedDate = formatDate(DateTime.fromJSDate(date));
-    return formattedDate.toLocaleString({ month: "long", day: "2-digit" }) + `, ${getYear(formattedDate)}`
+    return { day: formattedDate.toLocaleString({ month: "long", day: "2-digit" }), year: getYear(formattedDate) }
 }

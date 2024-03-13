@@ -22,9 +22,9 @@
 	<title> Norn 🎼 | Now listening {$page.data.year} </title>
 </svelte:head>
 <main class="container">
-	<slot/>
-	<div id="canvas" bind:this={canvas} />
 	<Header/>
+	<div id="canvas" bind:this={canvas} />
+	<slot/>
 	<Controls/>
 	{#if $isSearchOpen}
 		<Wheel/> 
@@ -33,7 +33,7 @@
 
 <style lang="sass">
 	.container
-		display: grid
-		grid-template-columns: repeat(3, 1fr)
+		display: flex
+		flex-direction: row-reverse
 		height: 100vh
 </style>

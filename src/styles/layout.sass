@@ -1,12 +1,16 @@
 @import "./variables"
 @import "./icons"
-@import url('https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Inconsolata:wght@200..900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Coustard:wght@400;900&family=Inconsolata:wght@200..900&display=swap')
 
 body
     margin: 0
     background: var(--background-color)
     color: var(--text-color)
     font-family: "Inconsolata", sans-serif
+    font-size: 13px
+
+    @media screen and ( min-width: 1280px )
+        font-size: 16px
 
 canvas
     width: 100%
@@ -42,6 +46,9 @@ input
     &:focus, &:hover
         background: #ccc
 
+label:has(input:focus)
+    color: var(--stress-color)
+
 .center
     text-align: center
 
@@ -52,3 +59,6 @@ input
 
     &>*:nth-child(2), &>*:nth-last-child(2)
         justify-self: end 
+
+.container > * 
+    flex: 1

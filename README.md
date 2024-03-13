@@ -10,11 +10,10 @@ Norn is a playlist for history. Soon, it will be enhanced with a bit of historic
 - [ ] 🎶 Music plays in the background according to the year (antiquity, medieval, renaissance, classical, rock)
 - [ ] 📝 You can edit an event
 - [ ] ✍️ You can add an event to the library
-- [ ] 💖 You can like a year
+- [x] 💖 You can like a year
 - [ ] 👆 You can interact with the timeline
 - [ ] 🧵 Timeline looks like the threads of mythology (cf. norns)
 - [x] 📅 Format calendar with different calendars possibility
-- [ ] 🔎 Clicking of the "focus" button centers Earth on a specific event
+- [x] 🔎 Clicking of the "focus" button centers Earth on a specific event
 - [ ] 🏴 The pins are colored following the flag of the country
-- [ ] 🔎 Clicking on the pin will focus on the event.
 - [ ] 👋 The Header component is more interactive. It can display the number of events, the country selected, its flag, and maybe a "featured" event.

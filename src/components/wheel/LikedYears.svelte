@@ -2,14 +2,22 @@
 	import { getFavoriteYears } from '@/interact/user'
 	import Bubble from '../templates/Bubble.svelte'
 	import Tiltle from '../layout/Tiltle.svelte'
+	import { goto } from '$app/navigation'
+	import { isSearchOpen } from '@/interact/commands'
 	const likedYears = getFavoriteYears()
+
+    const goToLikedYear = (year: string) => {
+        goto(`/${year}`);
+        isSearchOpen.set(false);
+    }
+
 </script>
 
 <Bubble class="liked-years">
 	<Tiltle variant="stress">Go back to your favorite years</Tiltle>
 	<fieldset id="liked-years">
 		{#each likedYears as year}
-			<a class="liked" href={`/${year}`}> {year} </a>
+			<button class="liked" on:click={() => goToLikedYear(year)}> {year} </button>
 		{/each}
 	</fieldset>
 </Bubble>
@@ -24,7 +32,8 @@ fieldset
     margin: 20px 0 0 0
     padding: 0
     gap: 1em
-    a
+    
+    button
         all: unset
         display: inline-block
         border: 1px solid $red
