@@ -8,6 +8,7 @@
 	import Header from '@/components/layout/Header.svelte'
 	import Controls from '@/components/layout/Controls.svelte'
 	import Wheel from '@/components/wheel/Wheel.svelte'
+	import Music from '@/components/ui/Music.svelte'
 
 	let canvas: HTMLDivElement
 
@@ -29,6 +30,7 @@
 	{#if $isSearchOpen}
 		<Wheel/> 
 	{/if}
+	<Music/>
 </main>
 
 <style lang="sass">

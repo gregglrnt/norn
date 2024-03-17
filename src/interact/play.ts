@@ -1,12 +1,14 @@
+import { get, writable } from "svelte/store";
 import { increaseDate } from "./navigation";
 
-let playlistID : NodeJS.Timeout;
+export const playing = writable<ReturnType<typeof setTimeout> | undefined>();
 
 export const playHistory = () => {
-    pauseHistory();
-    playlistID = setInterval(() => increaseDate(1), 500)
-}
-export const pauseHistory = () => {
-    if(playlistID) clearInterval(playlistID)
+    const timer = setInterval(() => increaseDate(1), 500);
+    playing.set(timer);
 }
 
+export const pauseHistory = () => {
+    clearInterval(get(playing));
+    playing.set(undefined)
+}

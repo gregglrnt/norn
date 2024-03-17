@@ -39,7 +39,7 @@ button, input, textarea
     &:hover
         cursor: pointer
 
-input 
+input
     border: 1px dashed var(--background-color)
     padding: 8px
 
@@ -58,7 +58,34 @@ label:has(input:focus)
         transform: translateX(30px)
 
     &>*:nth-child(2), &>*:nth-last-child(2)
-        justify-self: end 
+        justify-self: end
 
-.container > * 
+.container > *
     flex: 1
+
+.control
+    all: unset
+    padding: 5px
+    display: flex
+    align-items: center
+    gap: 5px
+    transition: ease-in-out 0.5s
+
+    svg
+        height: 2rem
+        aspect-ratio: 1
+
+    span
+        display: none
+        width: 0
+        white-space: nowrap
+        overflow: hidden
+        transition: all ease-in-out 0.2s
+    &:hover
+        span
+            display: block
+            color: var(--path-color)
+            width: auto
+            cursor: pointer
+        path
+            fill: var(--path-color)
