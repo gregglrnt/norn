@@ -20,6 +20,7 @@ export type ExpectedEventData = {
 	description: string
 	id: number
 	centuryId: number
+    placeName ?: string
 	country: ExpectedCountryData
 }[]
 
