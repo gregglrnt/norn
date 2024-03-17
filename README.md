@@ -7,7 +7,7 @@ Norn is a playlist for history. Soon, it will be enhanced with a bit of historic
     - [ ] filter by country
     - [ ] music
     - [ ] add an event
-- [ ] 🎶 Music plays in the background according to the year (antiquity, medieval, renaissance, classical, rock)
+- [x] 🎶 Music plays in the background according to the year (antiquity, medieval, renaissance, classical, rock)
 - [ ] 📝 You can edit an event
 - [ ] ✍️ You can add an event to the library
 - [x] 💖 You can like a year
