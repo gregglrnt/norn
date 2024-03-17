@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
-	import { page } from "$app/stores"
-	import { MAXYEAR, MINYEAR } from "@/stores/date"
+	import { MAXYEAR, MINYEAR, year } from "@/stores/date"
 	import { derived } from "svelte/store"
 
     //TODO: improve accessibility
 
     const timeLength = Math.abs(MAXYEAR) + Math.abs(MINYEAR)
-    const width = derived(page, ($page) => (parseInt($page.data.year) + Math.abs(MINYEAR)) / timeLength)
+    const width = derived(year, ($year) => (parseInt($year) + Math.abs(MINYEAR)) / timeLength)
 
     const updateTimeLine = (e : MouseEvent) => {
         const {clientX, currentTarget} = e;
@@ -20,7 +19,7 @@
 
 </script>
 
-<div class="time-line" on:click|preventDefault={updateTimeLine}>
+<div class="time-line" on:click|preventDefault={updateTimeLine} role="slider" tabindex="1">
     <div class="time-line-bar">
         <div class="time-line-counter" style={`width: ${$width * 100}%`}></div>
     </div>

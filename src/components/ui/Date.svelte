@@ -2,11 +2,13 @@
 	import { calendarType, getFullDate } from '@/stores/date'
 	import type { DateWithFormat } from '@/types/fact'
 	export let src: DateWithFormat
-	let className: string
+	let className: string = ""
 	export { className as class }
 
 	let date = ''
 	let dateDay = ''
+
+	//TODO: improve accessibility of time
 
 	$: {
 		$calendarType // TODO: find a better way to handle calendar changes
@@ -20,11 +22,5 @@
 	}
 </script>
 
-<time class={className}> {dateDay} <span class="year"> {date} </span> </time>
+<time data-testid="date" class={className}> {dateDay} <span class="year"> {date} </span></time>
 
-<style lang="sass">
-	time
-		.year
-			margin-left: 0.5rem
-			font-weight: bold
-</style>

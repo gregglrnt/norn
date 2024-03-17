@@ -4,6 +4,10 @@ import { increaseDecade } from "./navigation"
 
 export const isSearchOpen = writable<boolean>(false)
 
+export const toggleWheel = () => {
+    isSearchOpen.set(!isSearchOpen);
+}
+
 const commands: Map<KeyboardEvent["key"], () => void> = new Map([
     ['ArrowRight', () => { increaseDecade() }],
     ['ArrowLeft', () => increaseDecade(-1)],

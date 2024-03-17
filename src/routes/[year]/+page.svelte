@@ -22,7 +22,7 @@
 	<span class="nthg"> Nothing here ... 😴</span>
 	{/if}
 	{#each data.events as event}
-	<Card key={event.id} fact={event}/>
+	<Card fact={event}/>
 	{/each}
 	</div>
 </div>

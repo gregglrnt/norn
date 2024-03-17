@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let level = 2
+    type Levels = 1 | 2 | 3 | 4 | 5 | 6
+    export let level : Levels = 2
     export let variant : "highlight" | "stress" = "highlight"
     const tag = `h${level}`
 

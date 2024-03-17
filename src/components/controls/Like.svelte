@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from "$app/stores"
 	import { addLike, isFavorite } from "@/interact/user"
 	import { year } from "@/stores/date"
 
