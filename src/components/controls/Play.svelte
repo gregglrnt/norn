@@ -27,8 +27,3 @@
 	{/if}
     <span> {playing ? "Let's pause here" : "Play automatically"} </span>
 </button>
-
-<style lang="sass">
-    .play
-        --path-color: var(--highlight-color)
-</style>

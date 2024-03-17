@@ -64,6 +64,7 @@ label:has(input:focus)
     flex: 1
 
 .control
+    --path-color: var(--highlight-color)
     all: unset
     padding: 5px
     display: flex
@@ -89,3 +90,7 @@ label:has(input:focus)
             cursor: pointer
         path
             fill: var(--path-color)
+
+.control:not(.liked)
+    path
+        fill: var(--text-color)

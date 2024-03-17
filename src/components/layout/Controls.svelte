@@ -1,26 +1,16 @@
 <script lang="ts">
-	import { goto } from "$app/navigation"
-	import { MAXYEAR, MINYEAR, year } from "@/stores/date"
-	import Control from "../ui/Control.svelte"
-	import { increaseDecade } from "@/interact/navigation"
+	import { year } from "@/stores/date"
 	import TimeLine from "../search/TimeLine.svelte"
 	import Like from "../controls/Like.svelte"
 	import Play from "../controls/Play.svelte"
-
-
-
-
-    const shuffle = () => {
-        const randomYear = Math.floor(Math.random() * (MAXYEAR - MINYEAR + 1) + MINYEAR);
-        goto(`${randomYear}`);
-    }
-
+	import Shuffle from "../controls/Shuffle.svelte"
+	import Travel from "../controls/Travel.svelte"
 </script>
 <div id="controls">
-    <Control type="shuffle" on:click={shuffle} title="Random year!"/>
-    <Control type="backward" on:click={() => increaseDecade(-1)} title="Go back 10 years"/>
+    <Shuffle/>
+    <Travel type='backward'/>
     <Play/>
-    <Control type="forward" on:click={() => increaseDecade(1)} title="Go forward 10 years"/>
+    <Travel type='forward'/>
     {#key $year}
         <Like/>
     {/key}
