@@ -14,5 +14,6 @@ export type Fact = {
     description: string,
     id: number,
     title: string,
-    country: Country | null
+    country: Country | null,
+    placeName?: string
 }

@@ -32,6 +32,7 @@ export const formatChronicles = (data: ExpectedEventData) => {
 				description: element.description,
 				id: element.id,
 				centuryId: element.centuryId,
+				placeName: element.placeName,
 				country: formatCountry(element.country)
 			})
 		}
