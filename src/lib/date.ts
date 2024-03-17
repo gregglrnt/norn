@@ -1,25 +1,11 @@
 import type { DateWithFormat, Fact } from '@/types/fact'
 import { formatCountry } from '@/types/country'
 import { DateTime } from 'luxon'
+import type { ExpectedEventData } from './fetch'
 
 export const getDecade = (date: number): number => {
 	return Math.floor(date / 10) * 10
 }
-
-type ExpectedDataFromApi = {
-	date: string
-	coordinates: string
-	title: string
-	description: string
-	id: number
-	centuryId: number
-	country: {
-		id: number
-		name: string
-		label: string
-		flag?: string
-	}
-}[]
 
 const formatDate  = (value: string) : DateWithFormat => {
 	const isISO = isNaN(Number(value));
@@ -35,7 +21,7 @@ const formatDate  = (value: string) : DateWithFormat => {
 	}
 }
 
-export const formatChronicles = (data: ExpectedDataFromApi) => {
+export const formatChronicles = (data: ExpectedEventData) => {
 	const res: Fact[] = []
 	try {
 		for (const element of data) {

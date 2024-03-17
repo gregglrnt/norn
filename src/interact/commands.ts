@@ -1,17 +1,18 @@
 
-import { writable } from "svelte/store"
+import { get, writable } from "svelte/store"
 import { increaseDecade } from "./navigation"
 
 export const isSearchOpen = writable<boolean>(false)
 
 export const toggleWheel = () => {
-    isSearchOpen.set(!isSearchOpen);
+    const status = get(isSearchOpen)
+    isSearchOpen.set(!status);
 }
 
 const commands: Map<KeyboardEvent["key"], () => void> = new Map([
     ['ArrowRight', () => { increaseDecade() }],
     ['ArrowLeft', () => increaseDecade(-1)],
-    ['i', () => isSearchOpen.set(true)]
+    ['i', () => toggleWheel()]
 ])
 
 export const listenForCommands = (event: KeyboardEvent) => {

@@ -50,7 +50,7 @@
     width: 100%
     height: 100%
     background: transparentize(#00040D, 0.8)
-    backdrop-filter: blur(2px)
+    backdrop-filter: blur(2px) grayscale(50%)
 
 .wheel
     display: grid
