@@ -2,7 +2,7 @@
 	import { isSearchOpen } from '@/interact/commands'
 	import Tiltle from '../layout/Tiltle.svelte'
 	import Search from '../search/Search.svelte'
-	import CalenderSwitcher from './CalenderSwitcher.svelte'
+	import CalendarSwitcher from './CalendarSwitcher.svelte'
 	import LikedYears from './LikedYears.svelte'
 
 	const closeWheel = () => {
@@ -28,7 +28,7 @@
 				><span>Close the wheel</span></button
 			>
 			<Search />
-			<CalenderSwitcher />
+			<CalendarSwitcher />
 			<LikedYears />
 		</div>
 		<div id="middle-gutter">

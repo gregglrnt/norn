@@ -3,6 +3,6 @@
 </script>
 
 <div class="error-page">
-	<h1>Some error here :)</h1>
+	<h1>Something went wrong... 🥺</h1>
 	<p>{$page.error?.message}</p>
 </div>

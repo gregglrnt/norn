@@ -3,27 +3,27 @@
 	import Bubble from '../templates/Bubble.svelte'
 	import Button from '../ui/Button.svelte'
 	import { pauseHistory } from '@/interact/play'
-	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 	import { isSearchOpen } from '@/interact/commands'
+	import { year } from '@/stores/date'
+	import { search } from '@/lib/search'
 
 	let value: number
 	pauseHistory()
 
 	onMount(() => {
-		value = Number($page.data.year)
+		value = Number($year)
 	})
 
 	const handleEnter = (e: KeyboardEvent) => {
-		if (e.key === 'Enter') search()
+		if (e.key === 'Enter') handleSearch()
 	}
 
-	const search = () => {
-		const cleanValue = Number(value)
-		if (Number.isNaN(cleanValue) || !cleanValue) return //TODO: implement error
-		goto(`/${cleanValue}`)
+	const handleSearch = () => {
+		search(value)
 		isSearchOpen.set(false)
 	}
+
 </script>
 
 <Bubble class="search">
@@ -31,7 +31,7 @@
 	<span> Soon, you'll be able to filter by character </span>
 	<span> And by year </span>
 	<small> Note: you can only search with gregorian calendar as for now </small>
-	<Button on:click={() => search()}>Search this!</Button>
+	<Button on:click={() => handleSearch()}>Search this!</Button>
 </Bubble>
 
 <style lang="sass">

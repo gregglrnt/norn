@@ -7,7 +7,7 @@
     export {classNames as class}
 
 </script>
-<div class={`bubble ${classNames}`} transition:slide={{axis: 'y'}} on:click>
+<div data-testid="bubble" class={`bubble ${classNames}`} transition:slide={{axis: 'y'}} on:click>
     <slot/>
 </div>
 
