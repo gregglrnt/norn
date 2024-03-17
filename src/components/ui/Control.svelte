@@ -19,9 +19,9 @@
 			case 'forward':
 				return '<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 20 20"><path fill="white" fill-rule="evenodd" d="M9.097 8.038v-5.19c.038-.343.227-.563.568-.662c.341-.1.678-.013 1.012.26l8.086 6.838a.924.924 0 0 1 .334.716c0 .28-.111.52-.334.718l-8.14 6.884c-.333.23-.66.299-.98.205c-.32-.093-.502-.298-.546-.613v-5.238l-6.614 5.598c-.33.264-.68.349-1.046.253c-.366-.095-.544-.3-.534-.613V2.93c-.01-.329.14-.566.451-.712c.311-.146.668-.089 1.07.172z" /></svg>'
 			case 'pause':
-				return '<svg xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 20 20"><path fill="white" d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07M7 6v8h2V6zm4 0v8h2V6z"/></svg>'
+				return ''
 			case 'play':
-				return '<svg xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 1200 1200"><path fill="white" d="M600 1200C268.65 1200 0 931.35 0 600S268.65 0 600 0s600 268.65 600 600s-268.65 600-600 600M450 300.45v599.1L900 600z"/></svg>'
+				return ''
 			case 'like':
 				return ''
 			case 'full-like': 
@@ -36,32 +36,6 @@
 </button>
 
 <style lang="sass">
-    :global(.control)
-        all: unset
-        padding: 5px
-        display: flex
-        align-items: center
-        gap: 5px
-        transition: ease-in-out 0.5s
-
-        :global(svg)
-            height: 2rem
-            aspect-ratio: 1
-
-        span
-            width: 0
-            white-space: nowrap
-            overflow: hidden
-            transition: all ease-in-out 0.2s
-            color: var(--highlight-color)
-
-        &:hover
-            cursor: pointer
-
-            span
-                width: auto
-
-            :global(path)
-                fill: var(--highlight-color)
-
+	.control
+		--path-color: var(--highlight-color)
 </style>

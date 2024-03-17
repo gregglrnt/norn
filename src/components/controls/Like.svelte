@@ -26,13 +26,5 @@
 
 <style lang="sass">
     .like
-        span 
-            color: var(--stress-color)
-            display: none
-
-        &:hover 
-            span
-                display: block
-            :global(path)
-                fill: var(--stress-color)
+        --path-color: var(--stress-color)
 </style>
