@@ -5,9 +5,6 @@
 	import Play from "../controls/Play.svelte"
 	import Shuffle from "../controls/Shuffle.svelte"
 	import Travel from "../controls/Travel.svelte"
-
-
-
 </script>
 <div id="controls">
     <Shuffle/>
