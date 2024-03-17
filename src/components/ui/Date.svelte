@@ -24,3 +24,9 @@
 
 <time data-testid="date" class={className}> {dateDay} <span class="year"> {date} </span></time>
 
+<style lang="sass">
+	time
+		.year
+			font-weight: bold
+			margin-left: 0.5rem
+</style>

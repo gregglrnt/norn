@@ -13,7 +13,9 @@
 <Bubble class={`card ${$currentEvent === fact.id ? "selected" : ""}`} on:click={() => focusPin(fact.id)}>
     <Tiltle> {fact.title} </Tiltle>
     <div class="info">
-        <span class="icon-pin address"> {fact.country?.label || ""} </span>
+        {#if fact.country }
+        <span class="icon-pin address"> {fact.country.label} </span>
+        {/if}
         <Date class="icon-calendar" src={fact.date}/>
     </div>
     <p>
