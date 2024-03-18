@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import Bubble from '../templates/Bubble.svelte'
 	import Button from '../ui/Button.svelte'
 	import { pauseHistory } from '@/interact/play'
 	import { onMount } from 'svelte'
-	import { isSearchOpen } from '@/interact/commands'
 	import { year } from '@/stores/date'
 	import { search } from '@/lib/search'
 
@@ -16,12 +14,7 @@
 	})
 
 	const handleEnter = (e: KeyboardEvent) => {
-		if (e.key === 'Enter') handleSearch()
-	}
-
-	const handleSearch = () => {
-		search(value)
-		isSearchOpen.set(false)
+		if (e.key === 'Enter') search(value)
 	}
 
 </script>
@@ -31,7 +24,7 @@
 	<span> Soon, you'll be able to filter by character </span>
 	<span> And by year </span>
 	<small> Note: you can only search with gregorian calendar as for now </small>
-	<Button on:click={() => handleSearch()}>Search this!</Button>
+	<Button on:click={() => search(value)}>Search this!</Button>
 </Bubble>
 
 <style lang="sass">

@@ -16,6 +16,9 @@
 <Bubble class="liked-years">
 	<Tiltle variant="stress">Go back to your favorite years</Tiltle>
 	<fieldset id="liked-years">
+        {#if likedYears.length === 0} 
+            <span> You have no liked years yet. You can add them with the little heart 💟 </span>
+        {/if}
 		{#each likedYears as year}
 			<button class="liked" on:click={() => goToLikedYear(year)}> {year} </button>
 		{/each}

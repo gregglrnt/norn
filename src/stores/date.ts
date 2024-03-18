@@ -16,7 +16,7 @@ export const setCentury = (newDate: number): boolean => {
 }
 
 export const yearOutOfBounds = (year: number): boolean => {
-    return year <= MINYEAR || year >= MAXYEAR
+    return year < MINYEAR || year > MAXYEAR
 }
 
 export const MINYEAR = -800
@@ -26,11 +26,15 @@ const formatDate = (d: DateTime) => {
     return d.reconfigure({ outputCalendar: get(calendarType), locale: "en-us" })
 }
 
-export const year = derived([page, calendarType], () => {
-    const date = DateTime.local(get(page).data.year, 2, 1)
-    return getYear(date);
-}
-)
+// export const year = derived([page, calendarType], () => {
+//     const date = DateTime.local(get(page).data.year, 2, 1)
+//     return getYear(date);
+// }
+// )
+
+export const year = derived(page, () => {
+    return Number(get(page).data?.year) || new Date().getFullYear();
+})
 
 export const getYear = (date: DateTime) => {
     const formattedDate = formatDate(date);
