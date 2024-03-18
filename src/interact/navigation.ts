@@ -1,15 +1,26 @@
 import { goto } from "$app/navigation"
-import {page } from "$app/stores";
-import { get } from "svelte/store";
+import { year, yearOutOfBounds } from "@/stores/date";
+import { setPop } from "@/stores/pop";
+import { derived } from "svelte/store";
 
-export const increaseDate = (amount : -1 | 1 = 1) => {
-    const date = get(page).data.year;
-    goto((date + amount).toString());
+const lazyGoTo = (destination: string) => {
+    setTimeout(() => {
+        goto(destination)
+    }, 200)
 }
 
-export const increaseDecade = (amount : -1 | 1 = 1) => {
-    const date = get(page).data.year;
-    setTimeout(() => {
-        goto((date + (amount * 10)).toString())
-    }, 250)
+export const nextDecade = derived(year, ($year) => {
+    return $year + 10;
+})
+
+export const previousDecade = derived(year, ($year) => {
+    return $year - 10;
+})
+
+export const travel = (year: number) => {
+    if (yearOutOfBounds(year)) {
+        setPop("error", `Year ${year} is out of bounds sorry :(`)
+        return;
+    };
+    lazyGoTo(year.toString())
 }

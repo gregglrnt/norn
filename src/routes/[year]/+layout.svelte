@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { animate, renderUniverse, focusOnPinSphere } from "@/animation/rendering"
+	import { animate, renderUniverse} from "@/animation/rendering"
 	import { page } from '$app/stores'
-	import { currentEvent } from '@/stores/events'
-	import { isSearchOpen, listenForCommands } from '@/interact/commands'
+	import { isSearchOpen} from '@/interact/commands'
 	import "@/styles/layout.sass"
 	import Header from '@/components/layout/Header.svelte'
 	import Controls from '@/components/layout/Controls.svelte'
 	import Wheel from '@/components/wheel/Wheel.svelte'
 	import Music from '@/components/ui/Music.svelte'
+	import Toast from '@/components/ui/Toast.svelte'
 
 	let canvas: HTMLDivElement
 
@@ -31,6 +31,7 @@
 		<Wheel/> 
 	{/if}
 	<Music/>
+	<Toast/>
 </main>
 
 <style lang="sass">

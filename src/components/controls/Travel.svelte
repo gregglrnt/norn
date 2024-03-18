@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { increaseDecade } from '@/interact/navigation'
+	import { nextDecade, previousDecade, travel } from '@/interact/navigation'
+	import { yearOutOfBounds } from '@/stores/date'
 
 	export let type: 'backward' | 'forward'
 
-	const handleClick = () => {
-		if (type === 'backward') increaseDecade(-1)
-		if (type === 'forward') increaseDecade(1)
+	let destination: number;
+
+	$ : {
+		destination = type === "forward" ? $nextDecade : $previousDecade
 	}
+
 </script>
 
-<button class={`control ${type}`} on:click={() => handleClick()}>
+<button title={destination.toString()} class={`control ${type}`} on:click={() => travel(destination)} disabled={yearOutOfBounds(destination)}>
 	{#if type === 'backward'}
 		<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 20 20"
 			><path
