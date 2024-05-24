@@ -1,4 +1,4 @@
-import env from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { formatChronicles } from "./date";
 
 type EventsParams = {
