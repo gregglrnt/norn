@@ -26,7 +26,7 @@
     <Tiltle> {fact.title} </Tiltle>
     <div class="info">
         <span class="icon-pin address"> {generatePlaceName(fact)} <span class="country">{fact.country?.label}</span> </span>
-        <Date class="icon-calendar" src={fact.date}/>
+        <Date class="icon-calendar" from={fact.date}/>
     </div>
     <p>
         {fact.description}
@@ -36,14 +36,13 @@
 <style lang="sass">
     .info
         display: flex
+        flex-wrap: wrap
         align-items: center
-        gap: 1rem
+        gap: 0 1rem
 
     .address
         display: inline-flex
         gap: .5rem
-        .country
-            text-transform: uppercase
 
     :global(.card.selected)
         border: 2px solid var(--highlight-color)

@@ -36,6 +36,13 @@ export const year = derived(page, () => {
     return Number(get(page).data?.year) || new Date().getFullYear();
 })
 
+export const convertYear = (year: number) => {
+    const fakeDate = new Date();
+    fakeDate.setFullYear(year);
+    console.log("ff", fakeDate);
+    return getYear(DateTime.fromJSDate(fakeDate));
+}
+
 export const getYear = (date: DateTime) => {
     const formattedDate = formatDate(date);
     if (get(calendarType) === "iso8601" && formattedDate.year < 0) {
