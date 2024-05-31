@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { animate, renderUniverse} from "@/animation/rendering"
+	import { animate, renderUniverse, resizeCanvas} from "@/animation/rendering"
 	import { page } from '$app/stores'
 	import { isSearchOpen} from '@/interact/commands'
 	import "@/styles/layout.sass"
@@ -16,9 +16,10 @@
 		const world = renderUniverse()
 		canvas.replaceChildren(world.domElement)
 		animate()
+		resizeCanvas()
 	})
 </script>
-
+<svelte:window on:resize={() => resizeCanvas()}/>
 <svelte:head>
 	<title> Norn 🎼 | Now listening {$page.data.year} </title>
 </svelte:head>
@@ -39,4 +40,8 @@
 		display: flex
 		flex-direction: row-reverse
 		height: 100vh
+
+		@media screen and (width < 760px)
+			display: flex
+			flex-direction: column
 </style>

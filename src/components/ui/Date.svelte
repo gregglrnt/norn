@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { calendarType, getFullDate } from '@/stores/date'
 	import type { DateWithFormat } from '@/types/fact'
-	export let src: DateWithFormat
+	export let from: DateWithFormat
 	let className: string = ""
 	export { className as class }
 
@@ -12,10 +12,10 @@
 
 	$: {
 		$calendarType // TODO: find a better way to handle calendar changes
-		if (src.format === 'year') {
-			date = src.year.toString()
+		if (from.format === 'year') {
+			date = from.year.toString()
 		} else {
-			let { day, year } = getFullDate(src.value)
+			let { day, year } = getFullDate(from.value)
 			dateDay = day
 			date = year
 		}
