@@ -34,7 +34,7 @@ export const renderUniverse = () => {
 	controls.enableZoom = false
 	controls.autoRotate = true
 	controls.autoRotateSpeed = 0.2
-	camera.position.z = 100
+	camera.position.z = 150
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)
@@ -52,13 +52,16 @@ export const destroyUniverse = () => {
 	scene.remove(...scene.children)
 }
 
-const resizeCanvas = () => {
+export const resizeCanvas = () => {
 	const dom = world.domElement
 	const width = dom.clientWidth
 	const height = dom.clientHeight
 
+	console.log("w / h", `${width} / ${height}`)
+
 	if (dom.width !== width || dom.height !== height) {
 		world.setSize(width, height, false)
+		// console.log(world.)
 		camera.aspect = width / height
 		camera.updateProjectionMatrix()
 	}
@@ -67,7 +70,6 @@ const resizeCanvas = () => {
 export const animate = () => {
 	world.render(scene, camera)
 	controls.update()
-	resizeCanvas()
 	for (const animation of animateFunctions) {
 		animation()
 	}

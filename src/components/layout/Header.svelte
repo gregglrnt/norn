@@ -1,15 +1,22 @@
 <script lang="ts">
-	import { calendarType } from "@/stores/date"
+	import { calendarType, convertYear, getYear } from "@/stores/date"
 	import Help from "../ui/Help.svelte"
 	import { year } from "@/stores/date"
     import WheelButton from "../ui/WheelButton.svelte"
 	import { isSearchOpen } from "@/interact/commands"
 
+    let yearWithFormat: string;
+
+    $: {
+        yearWithFormat = convertYear($year);
+        $calendarType;
+    }
+
 </script>
 
 <header id="welcome">
     <p class="overtitle"><span class="logo">Norn</span> - Your history broadcast <br/> Brought to you by @gregglrnt <br/> Currently using the <strong>{$calendarType}</strong> calendar </p>
-	<h1>This is <button id="year" on:click={() => isSearchOpen.set(true)}> {$year} </button>!</h1>
+	<h1>This is <button id="year" on:click={() => isSearchOpen.set(true)}> {yearWithFormat} </button>!</h1>
     <p class="undertitle italic">Go through history like a good playlist</p>
     <p> 
         For now, the events displayed are in the decade before and after the year chosen.

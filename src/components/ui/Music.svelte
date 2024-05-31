@@ -23,7 +23,7 @@
     {/if}
 </button>
 
-<audio bind:this={music} muted={muted} autoplay loop src={`/audio/${$era}.mp3`}></audio>
+<audio bind:this={music} bind:muted={muted} autoplay loop src={`/audio/${$era}.mp3`}></audio>
 
 <style lang="sass">
 .audio-mute
