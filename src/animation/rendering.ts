@@ -34,7 +34,7 @@ export const renderUniverse = () => {
 	controls.enableZoom = false
 	controls.autoRotate = true
 	controls.autoRotateSpeed = 0.2
-	camera.position.z = 100
+	camera.position.z = 150
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)
@@ -56,8 +56,6 @@ export const resizeCanvas = () => {
 	const dom = world.domElement
 	const width = dom.clientWidth
 	const height = dom.clientHeight
-
-	console.log("cp", width, camera.position)
 
 	if (dom.width !== width || dom.height !== height) {
 		world.setSize(width, height, false)
