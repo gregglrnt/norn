@@ -37,10 +37,12 @@ export const year = derived(page, () => {
 })
 
 export const convertYear = (year: number) => {
-    const fakeDate = new Date();
-    fakeDate.setFullYear(year);
+    if(year === 0) {
+        return "1"
+    }
+    const fakeDate = DateTime.now().set({year: year});
     console.log("ff", fakeDate);
-    return getYear(DateTime.fromJSDate(fakeDate));
+    return getYear(fakeDate);
 }
 
 export const getYear = (date: DateTime) => {

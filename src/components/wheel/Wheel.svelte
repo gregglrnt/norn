@@ -51,6 +51,7 @@
     height: 100%
     background: transparentize(#00040D, 0.8)
     backdrop-filter: blur(2px) grayscale(50%)
+    z-index: 100
 
 .wheel
     display: grid
