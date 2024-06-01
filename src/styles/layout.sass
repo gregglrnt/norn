@@ -78,26 +78,14 @@ label:has(input:focus)
     align-items: center
     gap: 5px
     transition: ease-in-out 0.5s
+    &:not(.liked)
+        path
+            fill: var(--text-color)
 
     svg
         height: 2rem
         aspect-ratio: 1
 
-    span
-        display: none
-        width: 0
-        white-space: nowrap
-        overflow: hidden
-        transition: all ease-in-out 0.2s
     &:hover
-        span
-            display: block
-            color: var(--path-color)
-            width: auto
-            cursor: pointer
         path
             fill: var(--path-color)
-
-.control:not(.liked)
-    path
-        fill: var(--text-color)

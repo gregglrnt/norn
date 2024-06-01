@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types'
-	import { addEventsToPinSphere } from "@/animation/rendering"
+	import { addEventsToPinSphere } from '@/animation/rendering'
 	import { onMount } from 'svelte'
 	import { listenForCommands } from '@/interact/commands'
 	import Card from '@/components/layout/Card.svelte'
+	import Stack from '@/components/layout/Stack.svelte'
 
 	export let data: PageData
 	$: {
@@ -13,18 +14,25 @@
 	onMount(() => {
 		document.addEventListener('keydown', listenForCommands)
 	})
-
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content={data.events.length < 1
+			? `Nothing happened in ${data.year}`
+			: `Some events in ${data.year} include ${data.events
+					.slice(0, 3)
+					.map((event) => event.title)
+					.join(', ')}...`}
+	/>
+</svelte:head>
 <div class="page">
-	<div class="cards">
-	{#if data.events.length === 0}
-	<span class="nthg"> Nothing here ... 😴</span>
-	{/if}
-	{#each data.events as event}
-	<Card fact={event}/>
-	{/each}
-	</div>
+		{#if data.events.length === 0}
+			<span class="nthg"> Nothing here ... 😴</span>
+		{:else}
+		<Stack bind:cards={data.events}/>
+		{/if}
 </div>
 
 <style lang="sass">
@@ -36,12 +44,6 @@
 	scrollbar-color: #000c29 var(--background-color)
 	position: relative
 	max-height: 80vh
-
-.cards
-	display: flex
-	flex-direction: column
-	justify-content: flex-end
-	gap: 15px
 
 .nthg
 	color: #474747
