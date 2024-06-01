@@ -15,7 +15,6 @@
 </script>
 
 <header id="welcome">
-    <p class="overtitle"><span class="logo">Norn</span> - Your history broadcast <br/> Brought to you by @gregglrnt <br/> Currently using the <strong>{$calendarType}</strong> calendar </p>
 	<h1>This is <button id="year" on:click={() => isSearchOpen.set(true)}> {yearWithFormat} </button>!</h1>
     <p class="undertitle italic">Go through history like a good playlist</p>
     <p> 
@@ -42,9 +41,7 @@
 
     .overtitle
         text-transform: uppercase
-        .logo
-            letter-spacing: 10px
-            color: var(--highlight-color)
+        
 
     #year
         all: unset

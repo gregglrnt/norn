@@ -27,14 +27,14 @@ const animateFunctions: (() => void)[] = []
 let pinSphere: Mesh
 
 export const renderUniverse = () => {
-	world = new WebGLRenderer({ alpha: true })
+	world = new WebGLRenderer({ alpha: true, antialias: true })
 	const size = window.innerWidth / 2 / window.innerHeight
 	camera = new PerspectiveCamera(60, size)
 	controls = new OrbitControls(camera, world.domElement)
 	controls.enableZoom = false
 	controls.autoRotate = true
 	controls.autoRotateSpeed = 0.2
-	camera.position.z = 150
+	camera.position.z = 100
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)
@@ -57,14 +57,19 @@ export const resizeCanvas = () => {
 	const width = dom.clientWidth
 	const height = dom.clientHeight
 
-	console.log("w / h", `${width} / ${height}`)
+	console.log("cp", width, camera.position)
 
 	if (dom.width !== width || dom.height !== height) {
 		world.setSize(width, height, false)
-		// console.log(world.)
-		camera.aspect = width / height
+		world.setPixelRatio(window.devicePixelRatio)
+		camera.aspect = width /  height
 		camera.updateProjectionMatrix()
+		world.render(scene, camera);
 	}
+
+	if(width < 350) {
+		camera.position.setZ(10)
+	} else { camera.position.setZ(100)}
 }
 
 export const animate = () => {

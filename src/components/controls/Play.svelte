@@ -1,29 +1,40 @@
 <script lang="ts">
+	import { toggleWheel } from '@/interact/commands'
 	import { pauseHistory, playHistory, playing } from '@/interact/play'
+	import { calendarType, convertYear, year } from '@/stores/date'
 
-	const act = () => {
-        if($playing) {
-			pauseHistory();
-		} else {
-			playHistory();
-		}
+	let yearWithFormat: string;
+
+	$: {
+        yearWithFormat = convertYear($year);
+        $calendarType;
     }
 	
 </script>
 
-<button class={`control play`} on:click={() => act()}>
-	{#if $playing}
-		<svg xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 20 20"
-			><path
-				d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07M7 6v8h2V6zm4 0v8h2V6z"
-			/></svg
-		>
-	{:else}
-		<svg xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 1200 1200"
-			><path
-				d="M600 1200C268.65 1200 0 931.35 0 600S268.65 0 600 0s600 268.65 600 600s-268.65 600-600 600M450 300.45v599.1L900 600z"
-			/></svg
-		>
-	{/if}
-    <span> {playing ? "Let's pause here" : "Play automatically"} </span>
+<h1>
+<button class="play" class:playing={$playing} on:click={() => toggleWheel()}>
+	<time class="year">{yearWithFormat}</time>
+	<span class="tooltip">{$calendarType} calendar</span>
 </button>
+</h1>
+
+<style lang="sass">
+h1
+	all: unset
+.play
+	display: flex
+	flex-direction: column
+	align-items: center
+	border-radius: 50px
+	background: var(--text-color)
+	color: var(--background-color)
+	border: 1px solid var(--highlight-color)
+	padding: 1rem
+
+	&:hover 
+		background: var(--highlight-color)
+
+	.year
+		font-size: 2.5rem
+</style>

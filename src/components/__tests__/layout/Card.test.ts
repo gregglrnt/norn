@@ -7,7 +7,9 @@ describe("Card", () => {
     it("should render", () => {
         render(Card, {
             props: {
-                fact: MockFact
+                fact: MockFact,
+                position: 1,
+                total: 1
             }
         })
         expect(screen.getByText(MockFact.description)).toBeInTheDocument();

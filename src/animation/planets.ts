@@ -8,7 +8,7 @@ import {
 import earthImg from './assets/earth.jpg'
 import cloudImg from './assets/clouds.png'
 
-export const PLANET_RADIUS = 30
+export const PLANET_RADIUS = 20
 
 abstract class Planet {
 	private mesh: Mesh
