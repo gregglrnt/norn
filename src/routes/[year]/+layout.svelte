@@ -49,5 +49,10 @@
 
 		@media screen and (width < 760px)
 			flex-direction: column
+<<<<<<< HEAD
 
+=======
+			max-height: 100vh
+			
+>>>>>>> main
 </style>

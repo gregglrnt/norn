@@ -18,7 +18,11 @@
 
 </script>
 
+<<<<<<< HEAD
 <div class="stack" class:one-stack={cards.length === 1}>
+=======
+<div class="stack">
+>>>>>>> main
 	<button class="stack-btn" on:click={() => swipe(-1)}>{'<'}</button>
 	<div class="stack-track">
 		{#each cards as event, key}
@@ -30,9 +34,16 @@
 
 <style lang="sass">
 .stack
+<<<<<<< HEAD
     display: flex
     align-items: center
     gap: 1rem
+=======
+    height: 100%
+    display: flex
+    align-items: center
+    gap: 2rem
+>>>>>>> main
 
     @for $i from 1 through 4
         &:nth-child(#{$i}n)
@@ -63,6 +74,7 @@
         display: flex
         align-items: center
         justify-content: center
+<<<<<<< HEAD
         opacity: 0.7
 
         &:hover
@@ -72,4 +84,18 @@
     .stack-btn
         display: none
 
+=======
+        opacity: 0.5
+
+        &:hover
+            opacity: 1
+            
+:global(.focus)
+    z-index: 12
+
+@media screen and (width < 760px)
+    .stack
+        margin-bottom: 2rem
+        align-items: normal
+>>>>>>> main
 </style>

@@ -64,6 +64,10 @@ export const resizeCanvas = () => {
 		camera.updateProjectionMatrix()
 		world.render(scene, camera);
 	}
+
+	if(width < 350) {
+		camera.position.setZ(10)
+	} else { camera.position.setZ(100)}
 }
 
 export const animate = () => {
