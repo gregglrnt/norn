@@ -49,4 +49,6 @@
 
 		@media screen and (width < 760px)
 			flex-direction: column
+			max-height: 100vh
+			
 </style>
