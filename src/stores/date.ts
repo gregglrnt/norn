@@ -41,10 +41,6 @@ export const convertYear = (year: number) => {
         return "1"
     }
     const fakeDate = DateTime.now().set({year: year});
-<<<<<<< HEAD
-=======
-    console.log("ff", fakeDate);
->>>>>>> main
     return getYear(fakeDate);
 }
 

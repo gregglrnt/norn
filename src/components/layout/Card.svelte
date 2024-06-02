@@ -57,11 +57,7 @@
     gap: .5rem
 
 :global(.card.selected)
-<<<<<<< HEAD
     border-color: var(--highlight-color)
-=======
-    border: 2px solid var(--highlight-color)
->>>>>>> main
 
 :global(.bubble)
     &:hover
