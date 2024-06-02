@@ -24,13 +24,14 @@
 
 <style lang="sass">
     #controls
-        position: fixed
-        bottom: 0
         color: white
-        background: var(--background-color)
         max-width: 100vw
         width: 100%
-        z-index: 99
+        z-index: 50
+        grid-area: header
+        display: flex
+        flex-direction: column
+        gap: 1rem
 
         .line 
             display: flex

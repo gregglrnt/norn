@@ -34,7 +34,7 @@ export const renderUniverse = () => {
 	controls.enableZoom = false
 	controls.autoRotate = true
 	controls.autoRotateSpeed = 0.2
-	camera.position.z = 150
+	camera.position.z = 80
 	camera.position.y = 2
 	camera.aspect = window.innerWidth / window.innerHeight
 	light.position.copy(camera.position)

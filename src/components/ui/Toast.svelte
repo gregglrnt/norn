@@ -23,7 +23,7 @@
         width: 100%
         display: flex
         align-items: flex-start
-        z-index: 15
+        z-index: 99
         pointer-events: none
 
     .toast-pop

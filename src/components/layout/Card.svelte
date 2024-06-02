@@ -41,9 +41,10 @@
 <style lang="sass">
 :global(.card)
     gap: 0.5rem
-    position: absolute
+    // position: absolute
     width: 95%
     max-width: 100%
+    border: 2px solid lightgray
 
 .info
     display: flex
@@ -56,7 +57,7 @@
     gap: .5rem
 
 :global(.card.selected)
-    border: 2px solid var(--highlight-color)
+    border-color: var(--highlight-color)
 
 :global(.bubble)
     &:hover
