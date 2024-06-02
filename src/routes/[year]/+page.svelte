@@ -39,10 +39,6 @@
 .page
 	display: grid
 	padding: 20px
-	overflow-y: scroll
-	scrollbar-width: thin
-	scrollbar-color: #000c29 var(--background-color)
-	position: relative
 	max-height: 80vh
 
 .nthg

@@ -13,7 +13,7 @@
 </script>
 
 <h1>
-<button class="play" class:playing={$playing} on:click={() => toggleWheel()}>
+<button title="Click to change year" class="play" class:playing={$playing} on:click={() => toggleWheel()}>
 	<time class="year">{yearWithFormat}</time>
 	<span class="tooltip">{$calendarType} calendar</span>
 </button>
