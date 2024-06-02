@@ -11,7 +11,6 @@ export const load: PageServerLoad = async ({ params }) => {
 	const centuryUpdated = setCentury(year)
 	let newEvents : Fact[] = [];
 	if (centuryUpdated) {
-		console.log('century updated', get(century));
 		newEvents = await getEventsBy({century: get(century)}); 
 	}
 

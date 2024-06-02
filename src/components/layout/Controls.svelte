@@ -1,32 +1,44 @@
 <script lang="ts">
-	import { year } from "@/stores/date"
+	import { calendarType, year } from "@/stores/date"
 	import TimeLine from "../search/TimeLine.svelte"
 	import Like from "../controls/Like.svelte"
 	import Play from "../controls/Play.svelte"
 	import Shuffle from "../controls/Shuffle.svelte"
 	import Travel from "../controls/Travel.svelte"
 </script>
-<div id="controls">
-    <Shuffle/>
-    <Travel type='backward'/>
-    <Play/>
-    <Travel type='forward'/>
-    {#key $year}
-        <Like/>
-    {/key}
-    <TimeLine/>
-</div>
+<header id="controls">
+    <div class="line">
+        <Shuffle/>
+        <Travel type='backward'/>
+        <Play/>
+        <Travel type='forward'/>
+        {#key $year}
+            <Like/>
+        {/key}
+    </div>
+    <div class="line">
+        <p class="overtitle"><span class="logo">Norn</span> - Your history broadcast <br/></p>
+        <TimeLine/>
+    </div>
+</header>
 
 <style lang="sass">
     #controls
         position: fixed
         bottom: 0
         color: white
-        display: flex
-        flex-wrap: wrap
-        justify-content: center
-        width: 100%
-        max-width: 100vw
-        gap: 1rem
         background: var(--background-color)
+        max-width: 100vw
+        width: 100%
+        z-index: 99
+
+        .line 
+            display: flex
+            flex-wrap: wrap
+            justify-content: center
+            gap: 1rem
+.logo
+    text-transform: uppercase
+    letter-spacing: 10px
+    color: var(--highlight-color)
 </style>

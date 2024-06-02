@@ -5,9 +5,12 @@
 	import Bubble from "../templates/Bubble.svelte"
 	import { focusPin } from "@/interact/earth"
 	import { currentEvent } from "@/stores/events"
-	import type { Country } from "@/types/country"
 
     export let fact: Fact;
+    export let position: number;
+    export let total: number;
+    let classNames: string = "";
+    export {classNames as class}
 
     const generatePlaceName = (fact: Fact) => {
         let placeName = "";
@@ -22,7 +25,8 @@
 
 </script>
 
-<Bubble class={`card ${$currentEvent === fact.id ? "selected" : ""}`} on:click={() => focusPin(fact.id)}>
+<Bubble class={`card ${$currentEvent === fact.id ? "selected" : ""} ${classNames}`}>
+    <span class="card-position">{position + 1} / {total}</span>
     <Tiltle> {fact.title} </Tiltle>
     <div class="info">
         <span class="icon-pin address"> {generatePlaceName(fact)} <span class="country">{fact.country?.label}</span> </span>
@@ -31,24 +35,48 @@
     <p>
         {fact.description}
     </p>
+    <button class="focus-btn" title="Show me" on:click={() => focusPin(fact.id)}></button>
 </Bubble>
 
 <style lang="sass">
-    .info
-        display: flex
-        flex-wrap: wrap
-        align-items: center
-        gap: 0 1rem
+:global(.card)
+    gap: 0.5rem
+    position: absolute
+    width: 95%
+    max-width: 100%
 
-    .address
-        display: inline-flex
-        gap: .5rem
+.info
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 0 1rem
 
-    :global(.card.selected)
-        border: 2px solid var(--highlight-color)
-    
-    :global(.bubble)
-        &:hover
-            cursor: pointer
+.address
+    display: inline-flex
+    gap: .5rem
 
+:global(.card.selected)
+    border: 2px solid var(--highlight-color)
+
+:global(.bubble)
+    &:hover
+        cursor: pointer
+
+.focus-btn
+    background: var(--highlight-color)
+    align-self: flex-end
+    padding: 0.5rem 
+    border-radius: 50%
+    &:before
+        content: url("/svg/focus.svg")
+        object-position: center
+        display: block
+        height: 1rem
+        width: 1rem
+    &:hover
+        background: var(--stress-color)
+
+.card-position
+    font-size: 0.7rem
+    text-align: right
 </style>

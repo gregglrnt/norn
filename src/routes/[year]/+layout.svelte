@@ -24,10 +24,9 @@
 	<title> Norn 🎼 | Now listening {$page.data.year} </title>
 </svelte:head>
 <main class="container">
-	<Header/>
+	<Controls/>
 	<div id="canvas" bind:this={canvas} />
 	<slot/>
-	<Controls/>
 	{#if $isSearchOpen}
 		<Wheel/> 
 	{/if}
@@ -42,6 +41,7 @@
 		height: 100vh
 
 		@media screen and (width < 760px)
-			display: flex
 			flex-direction: column
+			max-height: 100vh
+			
 </style>
