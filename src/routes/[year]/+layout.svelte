@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { animate, renderUniverse, resizeCanvas} from "@/animation/rendering"
+	import { animate, renderUniverse, resizeCanvas } from '@/animation/rendering'
 	import { page } from '$app/stores'
-	import { isSearchOpen} from '@/interact/commands'
-	import "@/styles/layout.sass"
+	import { isSearchOpen } from '@/interact/commands'
+	import '@/styles/layout.sass'
 	import Header from '@/components/layout/Header.svelte'
 	import Controls from '@/components/layout/Controls.svelte'
 	import Wheel from '@/components/wheel/Wheel.svelte'
@@ -19,29 +19,35 @@
 		resizeCanvas()
 	})
 </script>
-<svelte:window on:resize={() => resizeCanvas()}/>
+
+<svelte:window on:resize={() => resizeCanvas()} />
 <svelte:head>
-	<title> Norn 🎼 | Now listening {$page.data.year} </title>
+	<title>Norn 🎼 | Now listening {$page.data.year}</title>
 </svelte:head>
-<main class="container">
-	<Controls/>
-	<div id="canvas" bind:this={canvas} />
-	<slot/>
-	{#if $isSearchOpen}
-		<Wheel/> 
-	{/if}
-	<Music/>
-	<Toast/>
-</main>
+<div class="layout">
+	<Controls />
+	<main class="container">
+		<div id="canvas" bind:this={canvas} />
+		<slot />
+		{#if $isSearchOpen}
+			<Wheel />
+		{/if}
+		<Music />
+		<Toast />
+	</main>
+</div>
 
 <style lang="sass">
+	.layout
+		display: grid
+		grid-template: 'main' 80% 'header' 20%
+		height: 100vh
 	.container
 		display: flex
 		flex-direction: row-reverse
-		height: 100vh
+		grid-area: main	
 
 		@media screen and (width < 760px)
 			flex-direction: column
-			max-height: 100vh
-			
+
 </style>

@@ -18,7 +18,7 @@
 
 </script>
 
-<div class="stack">
+<div class="stack" class:one-stack={cards.length === 1}>
 	<button class="stack-btn" on:click={() => swipe(-1)}>{'<'}</button>
 	<div class="stack-track">
 		{#each cards as event, key}
@@ -30,21 +30,28 @@
 
 <style lang="sass">
 .stack
-    height: 100%
     display: flex
     align-items: center
-    gap: 2rem
+    gap: 1rem
 
     @for $i from 1 through 4
         &:nth-child(#{$i}n)
             left: random(10) + px
 
     &-track
-        position: relative
-        height: 100%
-        display: flex
+        display: grid
+        grid-template: 1fr / 1fr
         align-items: inherit
+        place-items: center
         flex: 1
+
+        & > :global(.card)
+            grid-column: 1 / 1
+            grid-row: 1 / 1
+            z-index: 1
+
+        & > :global(.card.focus)
+            z-index: 2
 
     &-btn
         font-family: monospace
@@ -56,16 +63,13 @@
         display: flex
         align-items: center
         justify-content: center
-        opacity: 0.5
+        opacity: 0.7
 
         &:hover
             opacity: 1
-            
-:global(.focus)
-    z-index: 12
 
-@media screen and (width < 760px)
-    .stack
-        margin-bottom: 2rem
-        align-items: normal
+.one-stack
+    .stack-btn
+        display: none
+
 </style>
