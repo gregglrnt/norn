@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { animate, renderUniverse, resizeCanvas } from '@/animation/rendering'
+	import { renderUniverse, resizeCanvas } from '@/animation/rendering'
 	import { page } from '$app/stores'
 	import { isSearchOpen } from '@/interact/commands'
 	import '@/styles/layout.sass'
@@ -10,12 +10,11 @@
 	import Music from '@/components/ui/Music.svelte'
 	import Toast from '@/components/ui/Toast.svelte'
 
-	let canvas: HTMLDivElement
+	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
-		const world = renderUniverse()
-		canvas.replaceChildren(world.domElement)
-		animate()
+		renderUniverse(canvas)
+		// canvas.replaceChildren(world.domElement)
 		resizeCanvas()
 	})
 </script>
@@ -25,16 +24,16 @@
 	<title>Norn 🎼 | Now listening {$page.data.year}</title>
 </svelte:head>
 <div class="layout">
-	<Controls />
+	<!-- <Controls />
 	<main class="container">
-		<div id="canvas" bind:this={canvas} />
 		<slot />
 		{#if $isSearchOpen}
 			<Wheel />
 		{/if}
 		<Music />
 		<Toast />
-	</main>
+	</main> -->
+	<canvas id="canvas" bind:this={canvas} />
 </div>
 
 <style lang="sass">

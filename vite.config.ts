@@ -13,7 +13,7 @@ export default defineConfig({
 			'src/animation/*'
 		]
 	},
-	// server: {
-	// 	hmr: false
-	// }
+	server: {
+		hmr: false
+	}
 });

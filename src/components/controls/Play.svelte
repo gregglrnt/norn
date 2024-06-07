@@ -15,7 +15,7 @@
 <h1>
 <button title="Click to change year" class="play" class:playing={$playing} on:click={() => toggleWheel()}>
 	<time class="year">{yearWithFormat}</time>
-	<span class="tooltip">{$calendarType} calendar</span>
+	<span class="tooltip">📅 {$calendarType}</span>
 </button>
 </h1>
 
