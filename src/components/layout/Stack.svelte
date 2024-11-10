@@ -1,9 +1,16 @@
 <script lang="ts">
 	import type { Fact } from '@/types/fact'
 	import Card from './Card.svelte'
+	import { addEventsToPinSphere } from '@/animation/rendering'
 
-	export let cards: Fact[]
-    $: focused = 0
+    type Props = {
+        cards: Fact[],
+    }
+
+	let {cards} : Props = $props();
+    let focused = $state(0);
+
+    $effect(() => addEventsToPinSphere(cards));
 
     const swipe = (sum: number) => {
         const res = focused + sum;
@@ -18,15 +25,15 @@
 
 </script>
 
-<div class="stack" class:one-stack={cards.length === 1}>
+<div class="stack" class:one-stack={cards.length <= 1}>
 	<div class="stack-track">
 		{#each cards as event, key}
 			<Card class={`${key === focused ? 'focus' : ''}`} fact={event} position={key} total={cards.length}/>
 		{/each}
 	</div>
     <div class="stack-controls">
-	<button class="stack-btn" on:click={() => swipe(-1)}>{'<'}</button>
-	<button class="stack-btn" on:click={() => swipe(1)}>{'>'}</button>
+	<button class="stack-btn" onclick={() => swipe(-1)}>{'<'}</button>
+	<button class="stack-btn" onclick={() => swipe(1)}>{'>'}</button>
     </div>
 </div>
 

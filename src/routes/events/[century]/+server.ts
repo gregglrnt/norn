@@ -7,10 +7,11 @@ import { json } from "@sveltejs/kit";
 import { get } from "svelte/store";
 
 export async function GET({params}) {
+    console.log("req", params);
     try {
         const data = await fetch(`${env.BACK_URL}/events/${params.century}}`, {headers: [['Authorization', env.API_TOKEN]]});
-        const events = await data.json();
-        return json(events);
+                const events = await data.json();
+                return json(events);
     } catch (err) {
         console.error("ERROR", err)
         setPop('error', 'Error while fetching');

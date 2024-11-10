@@ -33,7 +33,7 @@ abstract class Planet extends Mesh {
 		this.name = name;
 		this.layers.set(1)
 		this.userData.animate = () => {
-			this.rotation.y += speed;
+			this.rotation.y += speed / 10;
 		}
 	}
 }
@@ -52,23 +52,23 @@ export class Earth extends Planet {
 
 export class Clouds extends Planet {
 	public constructor() {
-		super('clouds', PLANET_RADIUS + 0.5, 0.001, cloudImg, true, 0.5);
+		super('clouds', PLANET_RADIUS + 0.2, 0.001, cloudImg, true);
 	}
 }
 
 export class PinSphere extends Planet {
 	public constructor() {
-		super('pins', PLANET_RADIUS + 0.01, 0, undefined, true)
+		super('pins', PLANET_RADIUS - 0.5, 0, undefined, true)
 	}
 }
 
 export class Sun extends Mesh {
 	public constructor() {
-		const geometry = new IcosahedronGeometry(100, 15);
+		const geometry = new IcosahedronGeometry(20, 15);
 		const material = new MeshPhongMaterial({ color: "white", emissiveIntensity: 10, emissive: "#ffd91c" });
 		super(geometry, material);
 		this.name = "sun"
-		this.position.set(0, 0, -2000);
+		this.position.set(0, 0, -500);
 
 		this.layers.set(1);
 		this.onBeforeRender = (() => { this.userData.visible = true })

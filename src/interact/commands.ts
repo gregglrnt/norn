@@ -17,6 +17,5 @@ const commands: Map<KeyboardEvent["key"], () => void> = new Map([
 
 export const listenForCommands = (event: KeyboardEvent) => {
     const command = commands.get(event.key)
-    console.log(event.key, command);
     if (command) command()
 }

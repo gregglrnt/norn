@@ -31,6 +31,7 @@ h1
 	color: var(--background-color)
 	border: 1px solid var(--highlight-color)
 	padding: 1rem
+	min-width: 200px
 
 	&:hover 
 		background: var(--highlight-color)
