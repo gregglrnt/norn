@@ -1,6 +1,6 @@
 import CalendarSwitcher from "@/components/wheel/CalendarSwitcher.svelte";
 import { calendarType } from "@/stores/date";
-import { fireEvent, render, screen } from "@testing-library/svelte";
+import { fireEvent, render, screen } from "@testing-library/svelte/svelte5";
 import { get } from "svelte/store";
 import { describe, expect, it } from "vitest";
 

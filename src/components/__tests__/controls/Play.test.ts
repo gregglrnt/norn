@@ -1,6 +1,6 @@
 
 import Play from "@/components/controls/Play.svelte";
-import { render } from "@testing-library/svelte";
+import { render } from "@testing-library/svelte/svelte5";
 import { describe, it } from "vitest";
 
 describe("Play", () => {

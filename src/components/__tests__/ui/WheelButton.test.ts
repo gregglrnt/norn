@@ -1,5 +1,5 @@
 import WheelButton from "@/components/ui/WheelButton.svelte";
-import { fireEvent, render, screen } from "@testing-library/svelte";
+import { fireEvent, render, screen } from "@testing-library/svelte/svelte5";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/interact/commands");

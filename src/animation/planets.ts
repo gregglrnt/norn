@@ -1,82 +1,76 @@
 import {
-	Color,
+	IcosahedronGeometry,
 	Mesh,
 	MeshBasicMaterial,
-	MeshLambertMaterial,
 	MeshPhongMaterial,
-	MeshStandardMaterial,
 	SphereGeometry,
 	TextureLoader,
 	type MeshBasicMaterialParameters,
-	type MeshLambertMaterialParameters,
-	type MeshPhongMaterialParameters
 } from 'three'
-import earthImg from './assets/black_earth.jpg'
+import earthImg from './assets/earth.jpg'
+import nightEarthImg from './assets/black_earth.jpg'
 import cloudImg from './assets/clouds.png'
-import specularPath from "./assets/specular.jpg"
 
-export const PLANET_RADIUS = 20
+export const PLANET_RADIUS = 10
 
-abstract class Planet {
-	protected mesh: Mesh
-	private animate: () => void
-
+abstract class Planet extends Mesh {
 	public constructor(
 		name: string,
 		radius: number,
 		speed: number,
 		texturePath?: string,
-		transparent?: boolean
+		transparent?: boolean,
+		opacity: number = 1
 	) {
 		const sphere = new SphereGeometry(radius, 30, 30)
-		const props : MeshBasicMaterialParameters = { transparent: transparent || false }
+		const props: MeshBasicMaterialParameters = { transparent: transparent || false }
 		if (texturePath) {
 			props.map = new TextureLoader().load(texturePath);
-			if(name === "clouds") {
-				props.opacity = 0.1
-				// props.color = new Color("0")
-			}
-			// props.specular = new Color("black");
-			// props.shininess = 100
+			props.opacity = opacity;
 		}
 		const material = new MeshBasicMaterial({ ...props })
-		this.mesh = new Mesh(sphere, material)
-		this.mesh.name = name
-		this.animate = () => {
-			this.mesh.rotation.y += speed
+		super(sphere, material);
+		this.name = name;
+		this.layers.set(1)
+		this.userData.animate = () => {
+			this.rotation.y += speed;
 		}
-		this.mesh.layers.set(1)
-	}
-
-	public get(): [Mesh, () => void] {
-		return [this.mesh, this.animate]
 	}
 }
 
 export class Earth extends Planet {
-	public constructor() {
-		super('earth', PLANET_RADIUS, 0, earthImg)
+	public constructor(mode: "dark" | "light") {
+		let img;
+		if (mode === "light") {
+			img = earthImg;
+		} else {
+			img = nightEarthImg;
+		}
+		super('earth', PLANET_RADIUS, 0, img)
 	}
 }
 
 export class Clouds extends Planet {
 	public constructor() {
-		super('clouds', PLANET_RADIUS + 0.5, 0.005, cloudImg, true);
+		super('clouds', PLANET_RADIUS + 0.5, 0.001, cloudImg, true, 0.5);
 	}
 }
 
 export class PinSphere extends Planet {
 	public constructor() {
-		super('pins', PLANET_RADIUS + 0.1, 0, undefined, true)
+		super('pins', PLANET_RADIUS + 0.01, 0, undefined, true)
 	}
 }
 
-export class Sun extends Planet {
+export class Sun extends Mesh {
 	public constructor() {
-		super('sun', PLANET_RADIUS, 0)
-		this.mesh.position.set(100, 10, -500)
-		const material = new MeshStandardMaterial();
-		material.emissive = new Color("yellow");
-		this.mesh.material = material; 
+		const geometry = new IcosahedronGeometry(100, 15);
+		const material = new MeshPhongMaterial({ color: "white", emissiveIntensity: 10, emissive: "#ffd91c" });
+		super(geometry, material);
+		this.name = "sun"
+		this.position.set(0, 0, -2000);
+
+		this.layers.set(1);
+		this.onBeforeRender = (() => { this.userData.visible = true })
 	}
 }

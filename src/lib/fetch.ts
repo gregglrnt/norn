@@ -1,10 +1,6 @@
-import { env } from "$env/dynamic/private";
-import { formatChronicles } from "./date";
+//TODO: move into Data Model
 
-type EventsParams = {
-    century?: number,
-    //TODO: implement filters
-}
+import { formatChronicles } from "./date"
 
 export type ExpectedCountryData = {
     id: number
@@ -24,17 +20,7 @@ export type ExpectedEventData = {
 	country: ExpectedCountryData
 }[]
 
-async function request<Type>(path: string, method: string = "GET") : Promise<Type> {
-    const res = await fetch(`${env.BACK_URL}/${path}}`, {
-            headers: [[
-                "Authorization", env.API_TOKEN,
-            ]],
-            method: method,
-        })
-    return res.json();
-}
-
-export const getEventsBy = async (params: EventsParams) => {
-    const events = request<ExpectedEventData>(`events/${params.century || ''}`).then(json => formatChronicles(json))
-    return events;
-}
+// export const getEventsByCentury = async (century: number) => {
+//     if(!century) return [];
+//     return events;
+// }

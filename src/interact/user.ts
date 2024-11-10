@@ -15,7 +15,7 @@ export const addLike = () => {
     return true;
 }
 
-export const removeLike = (year: string) => {
+export const removeLike = (year: number) => {
     const favorites = getFavoriteYears();
     const yearInFavorites = favorites.indexOf(year);
     if(yearInFavorites === -1) return false;
@@ -24,7 +24,7 @@ export const removeLike = (year: string) => {
     return true;
 }
 
-export const getFavoriteYears = () : string[] => {
+export const getFavoriteYears = () : number[] => {
     if(!browser) return [];
     const storage = localStorage.getItem("liked_years");
     if(storage) {
@@ -34,10 +34,7 @@ export const getFavoriteYears = () : string[] => {
     return [];
 }
 
-export const isFavorite = (year: string) : boolean => {
-    const list = getFavoriteYears();
-    if(list.indexOf(year) === -1) {
-        return false;
-    }
-    return true; 
+export const isFavorite = (year: number) : boolean => {
+    const favorites = getFavoriteYears();
+    return favorites.includes(year);
 }

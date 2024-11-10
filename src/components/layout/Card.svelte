@@ -3,8 +3,7 @@
 	import Tiltle from "./Tiltle.svelte"
 	import Date from "../ui/Date.svelte"
 	import Bubble from "../templates/Bubble.svelte"
-	import { focusPin } from "@/interact/earth"
-	import { currentEvent } from "@/stores/events"
+	// import { focusPin } from "@/interact/earth"
 
     export let fact: Fact;
     export let position: number;
@@ -25,9 +24,10 @@
 
 </script>
 
-<Bubble class={`card ${$currentEvent === fact.id ? "selected" : ""} ${classNames}`}>
+<div class={`card ${classNames}`}>
     <span class="card-position">{position + 1} / {total}</span>
     <Tiltle> {fact.title} </Tiltle>
+    <Bubble>
     <div class="info">
         <span class="icon-pin address"> {generatePlaceName(fact)} <span class="country">{fact.country?.label}</span> </span>
         <Date class="icon-calendar" from={fact.date}/>
@@ -35,8 +35,9 @@
     <p>
         {fact.description}
     </p>
-    <button class="focus-btn" title="Show me" on:click={() => focusPin(fact.id)}></button>
-</Bubble>
+    <!-- <button class="focus-btn" title="Show me" on:click={() => focusPin(fact.id)}></button> -->
+    </Bubble>
+</div>
 
 <style lang="sass">
 :global(.card)
@@ -44,7 +45,10 @@
     // position: absolute
     width: 95%
     max-width: 100%
-    border: 2px solid lightgray
+    visibility: hidden
+
+:global(.card.focus)
+    visibility: visible
 
 .info
     display: flex
@@ -55,9 +59,6 @@
 .address
     display: inline-flex
     gap: .5rem
-
-:global(.card.selected)
-    border-color: var(--highlight-color)
 
 :global(.bubble)
     &:hover

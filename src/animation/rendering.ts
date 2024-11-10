@@ -1,59 +1,43 @@
 import {
-	AxesHelper,
 	Color,
-	DirectionalLight,
 	Group,
-	IcosahedronGeometry,
 	Mesh,
 	MeshBasicMaterial,
 	MeshPhongMaterial,
-	MeshStandardMaterial,
+	Object3D,
 	PerspectiveCamera,
 	Scene,
 	SphereGeometry,
-	Texture,
-	TextureLoader,
 	Vector2,
 	WebGLRenderer
 } from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import type { Fact } from '@/types/fact'
-import { Clouds, Earth, PLANET_RADIUS, PinSphere, Sun } from './planets'
+import { Clouds, Earth, PinSphere, PLANET_RADIUS, Sun } from './planets'
 import { currentEvent } from '@/stores/events'
-import { EffectComposer, RenderPass, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
-import sunMap from "./assets/sun.jpg"
+import { EffectComposer, OrbitControls, RenderPass, UnrealBloomPass } from 'three/examples/jsm/Addons.js'
 const scene = new Scene()
 
 let renderer: WebGLRenderer
-let controls: OrbitControls
 let camera: PerspectiveCamera
-
-// let bloomComposer: EffectComposer;
-
-const light = new DirectionalLight(0xfff2cc, 1)
-const group = new Group()
-
+let bloomComposer: EffectComposer
 let pinSphere: Mesh
+let controls: OrbitControls;
 
-export const renderUniverse = (canvas: HTMLCanvasElement) => {
-	const fov = 60;
+export const renderUniverse = () => {
 	const aspect = window.innerWidth / window.innerHeight;
-	const near = 0.1;
-	const far = 1000;
-	// camera = new PerspectiveCamera(fov, aspect, near, far);
 	camera = new PerspectiveCamera(60, aspect)
 	camera.position.z = 8;
 	camera.position.x = 0;
 	scene.add(camera);
 
-	controls = new OrbitControls(camera, canvas)
 
-	//default renderer
 	renderer = new WebGLRenderer({
-		canvas: canvas,
 		antialias: true,
 	});
-	// renderer.autoClear = false;
+
+	controls = new OrbitControls(camera, renderer.domElement)
+	controls.enableZoom = true
+
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 	renderer.setClearColor(0x000);
@@ -66,66 +50,67 @@ export const renderUniverse = (canvas: HTMLCanvasElement) => {
 		0.4, //radius
 		1 //threshold
 	);
-	// bloomPass.threshold = 0;
-	// bloomPass.strength = 2; //intensity of glow
-	// bloomPass.radius = 0;
-	const bloomComposer = new EffectComposer(renderer);
+	bloomComposer = new EffectComposer(renderer);
 	bloomComposer.setSize(window.innerWidth, window.innerHeight);
 	bloomComposer.renderToScreen = true;
 	bloomComposer.addPass(renderScene);
 	bloomComposer.addPass(bloomPass);
 
-
-	//sun object
-	const geometry = new IcosahedronGeometry(100, 15);
-	const material = new MeshPhongMaterial({ map: new TextureLoader().load(sunMap), emissiveIntensity: 10, emissive: "#ffd91c" });
-	const sun = new Mesh(geometry, material);
-	sun.name = "sun"
-	const [earth] = new Earth().get()
-	const [clouds] = new Clouds().get()
-	sun.layers.set(1);
-	group.add(sun, earth, clouds)
-	sun.position.set(40, 20, -2000);
-	sun.onBeforeRender = (() => {sun.userData.visible = true})
-
-	// const [earth] = new Earth().get();
+	const center = new Object3D();
+	const group = new Group()
+	const clouds = new Clouds()
+	const sun = new Sun()
+	const earth = new Group();
+	const day = new Earth("light")
+	const night = new Earth("dark")
+	pinSphere = new PinSphere();
+	center.add(sun);
+	earth.add(day, night, pinSphere, clouds);
+	group.position.set(40, 0, 0)
+	group.add(center, earth)
 	scene.add(group);
-	scene.add(new AxesHelper(100))
+	controls.target = center.position;
+	controls.update()
+
 	const animate = () => {
 		requestAnimationFrame(animate);
 		earth.rotation.y += 0.001
 		clouds.rotation.y += 0.005
+		center.rotation.y += 0.005
 		sun.userData.visible = false
 		camera.layers.set(1);
 		bloomComposer.render();
+		controls.target = group.position;
 		controls.update()
-		if(sun.userData.visible) {console.log("sun visible!")} else {console.log("sun not visible!")}
+		if (sun.userData.visible) {
+			day.visible = false
+			night.visible = true
+		} else {
+			day.visible = true
+			night.visible = false
+		}
 	}
 	animate();
-	console.log("rendered");
+	return renderer.domElement;
 }
 
 export const destroyUniverse = () => {
 	scene.remove(...scene.children)
 }
 
-export const resizeCanvas = () => {
-	const dom = renderer.domElement
-	const width = dom.clientWidth
-	const height = dom.clientHeight
+export const resize = () => {
+	const canvas = renderer.domElement;
+	const width = window.innerWidth
+	const height = window.innerHeight
 
-	if (dom.width !== width || dom.height !== height) {
-		renderer.setSize(width, height, false)
-		// bloomComposer.setSize(width, height)
-		renderer.setPixelRatio(window.devicePixelRatio)
+
+	if (canvas.width !== width || canvas.height !== height) {
+		renderer.setSize(width, height)
+		bloomComposer.setSize(width, height)
 		camera.aspect = width / height
 		camera.updateProjectionMatrix()
-		renderer.render(scene, camera);
+		bloomComposer.render();
 	}
-
-	if (width < 350) {
-		camera.position.setZ(10)
-	} else { camera.position.setZ(100) }
 }
 
 // export const animate = () => {
@@ -157,8 +142,9 @@ const createOrReturnPin = (event: Fact): Pin => {
 	if (existingPin) return existingPin as Pin;
 	const pin: Pin = new Mesh(
 		new SphereGeometry(0.5, 10, 10),
-		new MeshBasicMaterial({ color: "#D84797" }) //TODO: immplement coloration
+		new MeshPhongMaterial({ color: "#D84797", emissive: "#D84797", emissiveIntensity: 11}) //TODO: immplement coloration
 	)
+	pin.layers.set(1)
 	pin.geometry.computeBoundingSphere();
 	// pin.material.color = "red";
 	pin.name = `pin_event_${event.id}`
@@ -184,7 +170,10 @@ export const focusOnPinSphere = (eventId: number) => {
 	if (!focusedObject) return
 	focusedObject.material.color = new Color("#53FCAB");
 	const dist = camera.position.length()
-	camera.position.copy(focusedObject.position).normalize().multiplyScalar(dist)
+	console.log("dist", dist);
+	console.log(focusedObject.position);
+	console.log(camera.position)
+	// camera.position.copy(40,  ).setX(40).normalize()
 	currentEvent.set(eventId);
 }
 

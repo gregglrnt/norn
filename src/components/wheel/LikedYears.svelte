@@ -2,12 +2,12 @@
 	import { getFavoriteYears } from '@/interact/user'
 	import Bubble from '../templates/Bubble.svelte'
 	import Tiltle from '../layout/Tiltle.svelte'
-	import { goto } from '$app/navigation'
 	import { isSearchOpen } from '@/interact/commands'
+	import { year } from '@/stores/date'
 	const likedYears = getFavoriteYears()
 
-    const goToLikedYear = (year: string) => {
-        goto(`/${year}`);
+    const goToLikedYear = (newYear: number) => {
+        year.set(newYear);
         isSearchOpen.set(false);
     }
 

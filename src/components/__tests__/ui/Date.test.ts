@@ -1,5 +1,5 @@
 import Date from "@/components/ui/Date.svelte";
-import { render, screen } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte/svelte5";
 import { describe, expect, it } from "vitest";
 import { MockDateWithFormat } from "../../../../tests/mocks";
 import { getFullDate } from "@/stores/date";

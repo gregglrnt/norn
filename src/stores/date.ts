@@ -1,19 +1,11 @@
 import { page } from '$app/stores';
 import { derived, get, writable } from 'svelte/store'
 import { DateTime } from "luxon"
+import { invalidate } from '$app/navigation';
 
 export type CalendarType = "iso8601" | "persian" | "islamic" | "japanese" | "coptic" | "chinese" | "buddhist" | "indian" | "hebrew";
 
-export const century = writable<number>()
-
 export const calendarType = writable<CalendarType>("iso8601")
-
-export const setCentury = (newDate: number): boolean => {
-    const newCentury = Math.ceil(newDate / 100)
-    const isNewCentury = newCentury !== get(century)
-    if (isNewCentury) century.set(newCentury)
-    return isNewCentury
-}
 
 export const yearOutOfBounds = (year: number): boolean => {
     return year < MINYEAR || year > MAXYEAR
@@ -32,9 +24,13 @@ const formatDate = (d: DateTime) => {
 // }
 // )
 
-export const year = derived(page, () => {
-    return Number(get(page).data?.year) || new Date().getFullYear();
-})
+// export const year = derived(page, () => {
+//     return Number(get(page).data?.year) || new Date().getFullYear();
+// })
+
+export const year = writable(1515);
+export const century = derived(year, ($year) => Math.ceil($year / 100));
+
 
 export const convertYear = (year: number) => {
     if(year === 0) {
