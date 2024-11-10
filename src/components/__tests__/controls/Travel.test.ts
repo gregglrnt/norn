@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte/svelte5";
 import { describe, expect, it } from "vitest";
 import Travel from "@/components/controls/Travel.svelte";
 

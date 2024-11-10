@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
-	import { MAXYEAR, MINYEAR } from '@/stores/date'
+	import { MAXYEAR, MINYEAR, year } from '@/stores/date'
 
 	const shuffleYear = () => {
 		const randomYear = Math.floor(Math.random() * (MAXYEAR - MINYEAR + 1) + MINYEAR)
-		goto(`${randomYear}`)
+		year.set(randomYear);
 	}
 </script>
 

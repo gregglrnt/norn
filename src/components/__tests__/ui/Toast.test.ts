@@ -1,8 +1,10 @@
 import Toast from "@/components/ui/Toast.svelte";
 import { pop } from "@/stores/pop";
-import { render, screen } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte/svelte5";
 import { tick } from "svelte";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock('svelte/transition');
 
 describe("Toast", () => {
     it("should render", () => {

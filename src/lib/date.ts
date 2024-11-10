@@ -23,6 +23,7 @@ const formatDate  = (value: string) : DateWithFormat => {
 
 export const formatChronicles = (data: ExpectedEventData) => {
 	const res: Fact[] = []
+	console.log("------data", data);
 	try {
 		for (const element of data) {
 			res.push({

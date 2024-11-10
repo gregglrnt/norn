@@ -1,6 +1,5 @@
-import { goto } from "$app/navigation"
 import { isSearchOpen } from "@/interact/commands"
-import { MAXYEAR, MINYEAR, yearOutOfBounds } from "@/stores/date"
+import { MAXYEAR, MINYEAR, year, yearOutOfBounds } from "@/stores/date"
 import { setPop } from "@/stores/pop"
 
 export const search = (value: number) => {
@@ -10,6 +9,6 @@ export const search = (value: number) => {
         setPop("error", `Please choose a year between ${MINYEAR} and ${MAXYEAR}`);
         return;
     }
-    goto(`/${cleanValue}`);
+    year.set(cleanValue);
 	isSearchOpen.set(false)
 }

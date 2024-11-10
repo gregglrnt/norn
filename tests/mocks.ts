@@ -1,5 +1,5 @@
-import { Country } from "@/types/country";
-import { DateWithFormat, Fact } from "@/types/fact";
+import type { Country } from "@/types/country";
+import type { DateWithFormat, Fact } from "@/types/fact";
 
 export const MockDateWithFormat: DateWithFormat = {
     value: new Date(), format: "full", year: 2024

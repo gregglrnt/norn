@@ -4,13 +4,12 @@ import { year } from "./date";
 type Era = "early-antiquity" | "antiquity" |"dark-ages" | "middle-ages" | "renaissance" | "classical" | "industrial" | "atomic";
 
 export const era: Readable<Era> = derived(year, ($year) => {
-    const y = $year
-    if (y > -100 && y < 476) return "antiquity"
-    if(y > 476 && y < 700) return "dark-ages"
-    if (y > 700 && y < 1453) return "middle-ages"
-    if (y > 1453 && y < 1600) return "renaissance"
-    if (y > 1600 && y < 1789) return "classical"
-    if (y > 1789 && y < 1945) return "industrial"
-    if (y > 1945 && y < 3000) return "atomic"
+    if ($year > -100 && $year < 476) return "antiquity"
+    if($year > 476 && $year < 700) return "dark-ages"
+    if ($year > 700 && $year < 1453) return "middle-ages"
+    if ($year > 1453 && $year < 1600) return "renaissance"
+    if ($year > 1600 && $year < 1789) return "classical"
+    if ($year > 1789 && $year < 1945) return "industrial"
+    if ($year > 1945 && $year < 3000) return "atomic"
     return "early-antiquity";
 });

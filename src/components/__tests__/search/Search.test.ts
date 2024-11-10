@@ -1,5 +1,5 @@
 import Search from "@/components/search/Search.svelte";
-import { fireEvent, render, screen } from "@testing-library/svelte";
+import { fireEvent, render, screen } from "@testing-library/svelte/svelte5";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/search");

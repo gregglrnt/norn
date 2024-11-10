@@ -1,5 +1,5 @@
 import LikedYears from "@/components/wheel/LikedYears.svelte";
-import { render, screen } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte/svelte5";
 import { describe, expect, it, vi } from "vitest";
 
 

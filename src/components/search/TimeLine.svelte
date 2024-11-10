@@ -1,19 +1,17 @@
 <script lang="ts">
-	import { goto } from "$app/navigation"
 	import { MAXYEAR, MINYEAR, year } from "@/stores/date"
 	import { derived } from "svelte/store"
-
     //TODO: improve accessibility
 
     const timeLength = Math.abs(MAXYEAR) + Math.abs(MINYEAR)
-    const width = derived(year, ($year) => (parseInt($year) + Math.abs(MINYEAR)) / timeLength)
+    const width = derived(year, ($year) => ($year + Math.abs(MINYEAR)) / timeLength)
 
     const updateTimeLine = (e : MouseEvent) => {
         const {clientX, currentTarget} = e;
-        const width = (currentTarget as HTMLDivElement).clientWidth + 20; //FIXME: why +20? 
+        const width = (currentTarget as HTMLDivElement).clientWidth;
         const percentage = clientX / width; 
         const newYear = Math.floor((percentage * timeLength) + MINYEAR);
-        goto(`/${newYear}`)
+        year.set(newYear);
     }
 
 

@@ -7,7 +7,7 @@
 
     const swipe = (sum: number) => {
         const res = focused + sum;
-        if(res > cards.length) {
+        if(res > cards.length - 1) {
             return focused = 0
         }
         if (res < 0) {
@@ -19,24 +19,23 @@
 </script>
 
 <div class="stack" class:one-stack={cards.length === 1}>
-	<button class="stack-btn" on:click={() => swipe(-1)}>{'<'}</button>
 	<div class="stack-track">
 		{#each cards as event, key}
 			<Card class={`${key === focused ? 'focus' : ''}`} fact={event} position={key} total={cards.length}/>
 		{/each}
 	</div>
+    <div class="stack-controls">
+	<button class="stack-btn" on:click={() => swipe(-1)}>{'<'}</button>
 	<button class="stack-btn" on:click={() => swipe(1)}>{'>'}</button>
+    </div>
 </div>
 
 <style lang="sass">
 .stack
     display: flex
-    align-items: center
+    flex-direction: column
+    max-width: 100%
     gap: 1rem
-
-    @for $i from 1 through 4
-        &:nth-child(#{$i}n)
-            left: random(10) + px
 
     &-track
         display: grid
@@ -49,9 +48,16 @@
             grid-column: 1 / 1
             grid-row: 1 / 1
             z-index: 1
+            height: 100%
 
         & > :global(.card.focus)
             z-index: 2
+
+    &-controls
+        display: flex
+        justify-content: center
+        gap: 1rem
+
 
     &-btn
         font-family: monospace

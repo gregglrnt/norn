@@ -1,7 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/svelte"
+import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/svelte/svelte5"
 import Card from "@/components/layout/Card.svelte";
 import { MockFact } from "../../../../tests/mocks";
+
+vi.mock("./Tiltle.svelte")
+vi.mock("../ui/Date.svelte");
+vi.mock("../templates/Bubble.svelte")
+vi.mock('@/interact/earth')
 
 describe("Card", () => {
     it("should render", () => {

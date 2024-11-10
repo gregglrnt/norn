@@ -10,7 +10,7 @@
 	}
 </script>
 
-<div class="wheel-container">
+<div class="wheel-container" class:open={$isSearchOpen}>
 	<div class="wheel">
 		<div id="left-gutter">
 			<button on:click={() => closeWheel()}
@@ -49,18 +49,26 @@
     left: 0
     width: 100%
     height: 100%
+    max-width: 100vw
+    max-height: 100vh
     background: transparentize(#00040D, 0.8)
-    backdrop-filter: blur(2px) grayscale(50%)
+    backdrop-filter: blur(1px) grayscale(50%)
+    padding: 20px
     z-index: 80
+    display: none
+
+    &.open
+        display: flex
 
 .wheel
-    display: grid
-    grid-template-columns: repeat(3, 1fr)
+    display: flex
+    flex-direction: row-reverse
     width: 100%
     height: 100%
 
     & > div
         // border: 1px solid pink
+        max-width: 30%
         display: grid
         gap: 20px
         justify-items: center
