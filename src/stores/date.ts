@@ -18,17 +18,7 @@ const formatDate = (d: DateTime) => {
     return d.reconfigure({ outputCalendar: get(calendarType), locale: "en-us" })
 }
 
-// export const year = derived([page, calendarType], () => {
-//     const date = DateTime.local(get(page).data.year, 2, 1)
-//     return getYear(date);
-// }
-// )
-
-// export const year = derived(page, () => {
-//     return Number(get(page).data?.year) || new Date().getFullYear();
-// })
-
-export const year = writable(1515);
+export const year = writable<number>(1515);
 export const century = derived(year, ($year) => Math.ceil($year / 100));
 
 

@@ -8,10 +8,9 @@
 	import Controls from '@/components/layout/Controls.svelte'
 	import Wheel from '@/components/wheel/Wheel.svelte'
 	import Music from '@/components/ui/Music.svelte'
-	import Toast from '@/components/ui/Toast.svelte'
 	import {QueryClientProvider, QueryClient} from "@tanstack/svelte-query";
 	import {browser} from "$app/environment";
-	import { century } from '@/stores/date'
+	import { century, year } from '@/stores/date'
 	import { invalidate } from '$app/navigation'
 
 	let canvas: HTMLDivElement;

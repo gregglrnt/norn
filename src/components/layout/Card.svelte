@@ -3,7 +3,7 @@
 	import Tiltle from "./Tiltle.svelte"
 	import Date from "../ui/Date.svelte"
 	import Bubble from "../templates/Bubble.svelte"
-	// import { focusPin } from "@/interact/earth"
+	import { focusOnPinSphere } from "@/animation/rendering"
 
     export let fact: Fact;
     export let position: number;
@@ -26,7 +26,7 @@
 
 <div class={`card ${classNames}`}>
     <span class="card-position">{position + 1} / {total}</span>
-    <Tiltle> {fact.title} </Tiltle>
+    <Tiltle variant='stress'> {fact.title} </Tiltle>
     <Bubble>
     <div class="info">
         <span class="icon-pin address"> {generatePlaceName(fact)} <span class="country">{fact.country?.label}</span> </span>
@@ -35,7 +35,7 @@
     <p>
         {fact.description}
     </p>
-    <!-- <button class="focus-btn" title="Show me" on:click={() => focusPin(fact.id)}></button> -->
+    <button class="focus-btn" aria-label={`Focus ${fact.title} on sphere`} on:click={() => focusOnPinSphere(fact.id)}></button>
     </Bubble>
 </div>
 

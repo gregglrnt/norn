@@ -1,5 +1,7 @@
 import {
 	Color,
+	Fog,
+	FogExp2,
 	Group,
 	Mesh,
 	MeshBasicMaterial,
@@ -9,6 +11,7 @@ import {
 	Scene,
 	SphereGeometry,
 	Vector2,
+	Vector3,
 	WebGLRenderer
 } from 'three'
 import type { Fact } from '@/types/fact'
@@ -30,12 +33,13 @@ export const renderUniverse = () => {
 	camera.position.x = 0;
 	scene.add(camera);
 
-
 	renderer = new WebGLRenderer({
 		antialias: true,
 	});
 
+
 	controls = new OrbitControls(camera, renderer.domElement)
+	controls.addEventListener('end', () => console.log('change', camera.position)) //TODO: do something
 	controls.enableZoom = true
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -69,14 +73,17 @@ export const renderUniverse = () => {
 	group.position.set(40, 0, 0)
 	group.add(center, earth)
 	scene.add(group);
+	controls.enableZoom = false;
 	controls.target = center.position;
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.1;
 	controls.update()
 
 	const animate = () => {
 		requestAnimationFrame(animate);
 		earth.rotation.y += 0.001
-		clouds.rotation.y += 0.005
-		center.rotation.y += 0.005
+		clouds.rotation.y += 0.001
+		center.rotation.y += 0.0005
 		sun.userData.visible = false
 		camera.layers.set(1);
 		bloomComposer.render();
@@ -132,24 +139,24 @@ export const getCoordinatesFromLatLon = (lat: number, lon: number) => {
 	const y = radius * Math.sin(latRad)
 	const z = radius * Math.cos(latRad) * Math.sin(lonRad)
 
-	return [x, y, z]
+	return {x: x, y: y, z: z};
 }
 
-type Pin = Mesh<SphereGeometry, MeshBasicMaterial>;
+type Pin = Mesh<SphereGeometry, MeshPhongMaterial>;
 
 const createOrReturnPin = (event: Fact): Pin => {
 	const existingPin = pinSphere.getObjectByName(`pin_event_${event.id}`)
 	if (existingPin) return existingPin as Pin;
 	const pin: Pin = new Mesh(
-		new SphereGeometry(0.5, 10, 10),
+		new SphereGeometry(0.1, 10, 10),
 		new MeshPhongMaterial({ color: "#D84797", emissive: "#D84797", emissiveIntensity: 11}) //TODO: immplement coloration
 	)
 	pin.layers.set(1)
 	pin.geometry.computeBoundingSphere();
 	// pin.material.color = "red";
 	pin.name = `pin_event_${event.id}`
-	const [x, y, z] = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
-	pin.position.set(x, y, z)
+	const {x, y, z} = getCoordinatesFromLatLon(event.coordinates[0], event.coordinates[1])
+	pin.position.set(x, y, z).normalize();
 	pinSphere.add(pin);
 	return pin;
 }
@@ -169,11 +176,8 @@ export const focusOnPinSphere = (eventId: number) => {
 	const focusedObject = pinSphere.getObjectByName(`pin_event_${eventId}`) as Pin
 	if (!focusedObject) return
 	focusedObject.material.color = new Color("#53FCAB");
-	const dist = camera.position.length()
-	console.log("dist", dist);
-	console.log(focusedObject.position);
-	console.log(camera.position)
-	// camera.position.copy(40,  ).setX(40).normalize()
+	camera.position.set(focusedObject.position.x, focusedObject.position.y, focusedObject.position.y);
+	controls.update();
 	currentEvent.set(eventId);
 }
 

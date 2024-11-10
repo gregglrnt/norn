@@ -11,5 +11,4 @@ export function load({url}) {
         if(paramYear && parseInt(paramYear)) {
             year.set(parseInt(paramYear));
         }
-    
 }

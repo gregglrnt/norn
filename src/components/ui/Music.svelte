@@ -7,11 +7,13 @@
     
     onMount(() => {
         music.volume = 0.2
-        music.play()
     })
 
     const mute = () => {
         muted = !muted;
+        if(!muted && music.paused) {
+            music.play()
+        }
     }
 
 </script>

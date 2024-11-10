@@ -23,7 +23,6 @@ const formatDate  = (value: string) : DateWithFormat => {
 
 export const formatChronicles = (data: ExpectedEventData) => {
 	const res: Fact[] = []
-	console.log("------data", data);
 	try {
 		for (const element of data) {
 			res.push({
@@ -41,7 +40,7 @@ export const formatChronicles = (data: ExpectedEventData) => {
 		console.error(e)
 		return []
 	}
-	return res
+	return res.sort((a, b) => a.date.year - b.date.year);
 }
 
 export const coordinatesToLatLon = (coordinateString: string): [number, number] => {
