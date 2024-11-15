@@ -3,13 +3,16 @@
 	import Tiltle from "./Tiltle.svelte"
 	import Date from "../ui/Date.svelte"
 	import Bubble from "../templates/Bubble.svelte"
-	import { focusOnPinSphere } from "@/animation/rendering"
+	import { focusOnPinSphere } from "@/render/rendering"
 
-    export let fact: Fact;
-    export let position: number;
-    export let total: number;
-    let classNames: string = "";
-    export {classNames as class}
+    type CardProps = {
+        fact: Fact,
+        position: number,
+        total: number,
+        class?: string
+    }
+
+    const {fact, position, total, class: classNames = ""} : CardProps = $props();
 
     const generatePlaceName = (fact: Fact) => {
         let placeName = "";

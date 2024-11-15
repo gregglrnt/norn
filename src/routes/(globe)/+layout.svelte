@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import { renderUniverse, resize } from '@/animation/rendering'
+	import { onMount, untrack } from 'svelte'
+	import { renderUniverse, resize } from '@/render/rendering'
 	import { page } from '$app/stores'
 	import { isSearchOpen, listenForCommands } from '@/interact/commands'
 	import '@/styles/layout.sass'
@@ -11,9 +11,16 @@
 	import {QueryClientProvider, QueryClient} from "@tanstack/svelte-query";
 	import {browser} from "$app/environment";
 	import { century, year } from '@/stores/date'
-	import { invalidate } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
 
 	let canvas: HTMLDivElement;
+
+	let {children} = $props();
+
+	$effect(() => {
+		goto(`/${$century}`)
+	})
+
 
 	onMount(() => {
 		const universe = renderUniverse()
@@ -21,13 +28,6 @@
 		resize()
 	})
 
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				enabled: browser,
-			}
-		}
-	})
 
 </script>
 
@@ -37,13 +37,12 @@
 	<title>Norn 🎼 | Now listening {$page.data.year}</title>
 </svelte:head>
 	<main class="container">
-	<QueryClientProvider client={queryClient}>
 		<div class="content">
-			<slot></slot>
+			<h1>{$century}th century</h1>
+			{@render children?.()}
 		</div>
 	<Controls />
 	<Wheel/>
-	</QueryClientProvider>
 	<div id="canvas" bind:this={canvas}></div>
 	<Music/>
 </main>
@@ -56,6 +55,7 @@
 		grid-template: 	"header header header" 1fr "content canvas canvas" 2fr "footer footer footer" 1fr
 		height: 100vh
 		grid-template-columns: repeat(3, 1fr)
+		padding: 0.5rem
 
 		& > *
 			position: relative
@@ -65,9 +65,13 @@
 		grid-area: content
 		display: flex
 		padding: 1rem
-		align-items: center
+		justify-content: center
+		flex-direction: column
 
-		@media screen and (width < 1000px)
+		h1
+			color: #131b23
+
+		@media screen and (width < 960px)
 			grid-area: header
 
 	#canvas
