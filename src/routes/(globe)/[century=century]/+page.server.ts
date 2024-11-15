@@ -5,10 +5,10 @@ import { pop, setPop } from "@/stores/pop.js";
 import {get} from "svelte/store";
 
 
-export function load({url}) {
-        //TODO: better
-        const paramYear = url.searchParams.get('share');
-        if(paramYear && parseInt(paramYear)) {
-            year.set(parseInt(paramYear));
-        }
+export async function load({fetch, params}) {
+    const data = await fetch(`/events/${params.century}`);
+	const events = await data.json() as ExpectedEventData;
+    return {
+        events: formatChronicles(events),
+    }
 }

@@ -1,14 +1,12 @@
 <script lang="ts">
-    //TODO: improve accessibility of component
-	import { slide } from "svelte/transition"
+	import type { Snippet } from "svelte"
 
-    let classNames: string = "";
 
-    export {classNames as class}
+    const {class: classNames, children} = $props<{class ?: string, children: Snippet}>()
 
 </script>
-<div data-testid="bubble" class={`bubble ${classNames}`} transition:slide={{axis: 'y'}}>
-    <slot/>
+<div data-testid="bubble" class={`bubble ${classNames}`}>
+    {@render children?.()}
 </div>
 
 <style lang='sass'>
@@ -21,5 +19,7 @@
     color: var(--background-color)
     display: flex
     flex-direction: column
+    border: 1px solid #b0b0b0
+
 </style>
 

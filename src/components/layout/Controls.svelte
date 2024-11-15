@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { calendarType, year } from "@/stores/date"
+	import { year } from "@/stores/date"
 	import TimeLine from "../search/TimeLine.svelte"
 	import Like from "../controls/Like.svelte"
 	import Play from "../controls/Play.svelte"
 	import Shuffle from "../controls/Shuffle.svelte"
 	import Travel from "../controls/Travel.svelte"
-	import { era } from "@/stores/era"
 </script>
 <div id="controls">
     <div class="line">
@@ -19,9 +18,9 @@
     </div>
     <div class="line">
         <p class="overtitle"><span class="logo">Norn</span> - Your history broadcast <br/></p>
-        <p>Currently listening on playlist: {$era}</p>
-        <TimeLine/>
     </div>
+    <TimeLine/>
+
 </div>
 
 <style lang="sass">
@@ -37,7 +36,6 @@
 
         .line 
             display: flex
-            flex-wrap: wrap
             justify-content: center
             gap: 1rem
 .logo

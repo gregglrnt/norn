@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Fact } from '@/types/fact'
 	import Card from './Card.svelte'
-	import { addEventsToPinSphere } from '@/animation/rendering'
+	import { addEventsToPinSphere } from '@/render/rendering'
+	import { currentDecade } from '@/interact/navigation'
 
     type Props = {
         cards: Fact[],
@@ -11,6 +12,8 @@
     let focused = $state(0);
 
     $effect(() => addEventsToPinSphere(cards));
+
+    $effect(() => { $currentDecade ; focused = 0 } )
 
     const swipe = (sum: number) => {
         const res = focused + sum;
@@ -41,14 +44,13 @@
 .stack
     display: flex
     flex-direction: column
-    max-width: 100%
+    width: 100%
     gap: 1rem
 
     &-track
         display: grid
         grid-template: 1fr / 1fr
         align-items: inherit
-        place-items: center
         flex: 1
 
         & > :global(.card)
@@ -76,7 +78,9 @@
         display: flex
         align-items: center
         justify-content: center
-        opacity: 0.7
+        opacity: 0.9
+        border: 1px solid #b0b0b0
+
 
         &:hover
             opacity: 1

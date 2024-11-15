@@ -4,15 +4,25 @@
 	import Search from '../search/Search.svelte'
 	import CalendarSwitcher from './CalendarSwitcher.svelte'
 	import LikedYears from './LikedYears.svelte'
+	import { slide } from 'svelte/transition'
 
 	const closeWheel = () => {
 		isSearchOpen.set(false)
 	}
 </script>
 
-<div class="wheel-container" class:open={$isSearchOpen}>
+{#if $isSearchOpen}
+<div class="wheel-container" transition:slide>
 	<div class="wheel">
-		<div id="left-gutter">
+		<div id="middle-gutter">
+			<div>
+				<div class="center">
+					Bored of this ?
+					<Tiltle variant="stress">Let's change things around here.</Tiltle>
+				</div>
+			</div>
+		</div>
+        <div id="right-gutter">
 			<button on:click={() => closeWheel()}
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -31,16 +41,9 @@
 			<CalendarSwitcher />
 			<LikedYears />
 		</div>
-		<div id="middle-gutter">
-			<div>
-				<div class="center">
-					Bored of this ?
-					<Tiltle variant="stress">Let's change things around here.</Tiltle>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
+{/if}
 
 <style lang="sass">
 .wheel-container
@@ -52,30 +55,29 @@
     max-width: 100vw
     max-height: 100vh
     background: transparentize(#00040D, 0.8)
-    backdrop-filter: blur(1px) grayscale(50%)
+    backdrop-filter: blur(10px) grayscale(50%)
     padding: 20px
     z-index: 80
-    display: none
-
-    &.open
-        display: flex
 
 .wheel
     display: flex
-    flex-direction: row-reverse
+    flex-direction: column
     width: 100%
     height: 100%
+    @media screen and (width > 900px) 
+        flex-direction: row
+        justify-content: flex-end
 
     & > div
         // border: 1px solid pink
-        max-width: 30%
+        @media screen and (width > 900px )
+            max-width: 30%
         display: grid
         gap: 20px
-        justify-items: center
         align-content: center
+        place-content: center
 
     #middle-gutter
-        display: grid
         grid-template-rows: 1fr 2fr 1fr
 
         & > div
@@ -86,8 +88,6 @@
     :global(.tiltle)
         margin: 0
 
-    #left-gutter
-        justify-items: center
 
     button
         display: flex

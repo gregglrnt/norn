@@ -2,6 +2,7 @@
 	import { toggleWheel } from '@/interact/commands'
 	import { pauseHistory, playHistory, playing } from '@/interact/play'
 	import { calendarType, convertYear, year } from '@/stores/date'
+	import { era } from '@/stores/era'
 
 	let yearWithFormat: string;
 
@@ -12,16 +13,22 @@
 	
 </script>
 
-<h1>
+<div class="container">
 <button title="Click to change year" class="play" class:playing={$playing} on:click={() => toggleWheel()}>
 	<time class="year">{yearWithFormat}</time>
 	<span class="tooltip">📅 {$calendarType}</span>
+	<small>{$era}</small>
 </button>
-</h1>
+</div>
 
 <style lang="sass">
-h1
+.container
 	all: unset
+	display: flex
+	flex: 2
+	max-width: 200px
+
+
 .play
 	display: flex
 	flex-direction: column
@@ -31,7 +38,8 @@ h1
 	color: var(--background-color)
 	border: 1px solid var(--highlight-color)
 	padding: 1rem
-	min-width: 200px
+	width: 100%
+	border: 1px solid #b0b0b0
 
 	&:hover 
 		background: var(--highlight-color)
